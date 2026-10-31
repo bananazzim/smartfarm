@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {isSensorNear, labelPosition} from '../static/js/fps-proximity.js';
+assert.equal(isSensorNear(5,false),false);
+assert.equal(isSensorNear(3,false),true);
+assert.equal(isSensorNear(3.2,true),true);
+assert.equal(isSensorNear(3.2,false),false);
+assert.equal(isSensorNear(3.5,true),false);
+assert.equal(isSensorNear(NaN,true),false);
+const viewport={width:390,height:700},size={width:250,height:80};
+const first=labelPosition({x:200,y:300},size,viewport,[]);
+const second=labelPosition({x:200,y:300},size,viewport,[first]);
+assert(first.y+first.height<=second.y || second.y+second.height<=first.y);
+assert(first.x>=0 && first.x+first.width<=viewport.width);
+console.log('PASS: metre thresholds, hysteresis, invalid distances, overlap and viewport bounds');

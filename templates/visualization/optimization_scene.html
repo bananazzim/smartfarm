@@ -1,0 +1,18 @@
+<section class="simulator-layout optimization-scene" id="optimization-scene" aria-label="센서 위치 3D 시뮬레이터">
+  <article class="card simulator-card">
+    <div class="simulator-toolbar"><div><strong>{{ greenhouse.name }}</strong><span>{{ greenhouse.length_m }} × {{ greenhouse.width_m }} × {{ greenhouse.height_m }}m</span></div><div class="sim-controls">
+      <label class="sr-only" for="location-scenario">배치 시나리오</label><select id="location-scenario"><option value="all">전체 센서 보기</option><option value="recommended" selected>추천 조합</option></select>
+      <button id="location-reset" type="button" class="button button-secondary button-small">초기화</button>
+      <button id="location-retry" type="button" class="button button-secondary button-small" hidden>다시 불러오기</button>
+    </div></div>
+    <div class="scene-frame location-scene" id="location-scene" data-scene-state="loading"><canvas id="location-canvas" style="position:absolute;inset:0;width:100%;height:100%;display:block" aria-label="회전과 확대가 가능한 3D 온실"></canvas><div class="scene-badge">{% if is_demo %}DEMO MODEL{% else %}실제 측정 데이터{% endif %}</div><div class="scene-help">드래그하여 회전 · 스크롤하여 확대/축소</div><div class="scene-loading" id="location-loading" role="status">3D 모델을 불러오는 중…</div><div id="location-tooltip" class="location-tooltip" role="status" hidden></div></div>
+    <div class="axis-legend"><span><i class="axis-mark x-mark"></i>x 길이 방향</span><span><i class="axis-mark y-mark"></i>y 폭 방향</span><span><i class="axis-mark z-mark"></i>z 설치 높이</span></div>
+  </article>
+  <aside class="card sensor-detail"><div class="section-heading"><div><h2>센서 정보</h2><p>마커를 선택하면 좌표를 확인할 수 있습니다.</p></div></div>
+    <div class="detail-empty" id="location-detail-empty"><span>◎</span><p>3D 온실에서 센서를 선택하세요.</p></div>
+    <div id="location-detail" hidden><div class="selected-title"><span class="selected-dot"></span><strong id="location-sensor-name"></strong></div><dl class="coordinate-detail"><div><dt>x · 길이</dt><dd id="location-sensor-x"></dd></div><div><dt>y · 폭</dt><dd id="location-sensor-y"></dd></div><div><dt>z · 바닥 기준 높이</dt><dd id="location-sensor-z"></dd></div></dl></div>
+    <div class="location-sensor-buttons">{% for sensor in position_sensors %}<button type="button" class="location-select" data-sensor="{{ sensor.name }}">{{ sensor.name }}{% if not sensor.position_valid %} · 위치 미설정{% endif %}</button>{% endfor %}</div>
+    <div class="card-inline-note"><strong>좌표 기준</strong><p>원점은 바닥 한쪽 모서리입니다. 길이·폭은 m, 높이는 바닥에서 센서까지의 거리입니다. 빨강은 추천·선택 센서, 회색은 나머지 센서입니다.</p></div>
+  </aside>
+</section>
+{{ scene_data|json_script:"location-data" }}

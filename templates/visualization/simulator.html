@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}3D 시뮬레이터{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'css/simulator-fps.css' %}?v=combo-8"><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>{% endblock %}
+{% block content %}
+<form method="get" class="card filter-card">
+<label class="filter-group">대상 온실<select name="greenhouse">{% for item in greenhouses %}<option value="{{ item.pk }}" {% if greenhouse.pk == item.pk %}selected{% endif %}>{{ item.name }}</option>{% endfor %}</select></label>
+<label class="filter-group">데이터<select name="mode"><option value="real" {% if not is_demo %}selected{% endif %}>실제 측정 데이터</option><option value="demo" {% if is_demo %}selected{% endif %}>DEMO 예시</option></select></label>
+<button class="button button-primary" type="submit">온실 및 데이터 적용</button><a class="button button-secondary" href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}#csv-upload">CSV 업로드</a>
+</form>
+{% if not is_demo %}<p class="notice">선택한 조합의 센서를 기존 설치 좌표에서 블루로 표시합니다. 비교 조합은 1위 추천과 구분하며 새 좌표를 생성하지 않습니다.</p>{% endif %}
+{% if greenhouse.shape == 'connected' %}<p class="notice">등록 온실은 연동형입니다. 이 1인칭 화면은 등록된 전체 치수에 맞춘 단동 외형의 단순화 모델입니다.</p>{% endif %}
+{% if simulator_data.state == 'no_greenhouse' %}<div class="card empty-state"><h2>온실을 먼저 등록해 주세요</h2><a class="button button-primary" href="{% url 'greenhouse-create' %}">온실 등록</a></div>{% else %}
+<div id="gso-fps" data-theme="light" data-view="overview">
+<section id="fps-overview" class="fps-overview" aria-labelledby="overview-title">
+  <div class="overview-heading"><span class="overview-eyebrow">GREENHOUSE EXPLORER{% if is_demo %} · DEMO{% endif %}</span><h1 id="overview-title">{{ simulator_data.config.name }}</h1><p id="overview-dim">길이 {{ simulator_data.config.length }}m × 폭 {{ simulator_data.config.width }}m × 높이 {{ simulator_data.config.height }}m</p></div>
+  <p id="optimization-status" role="status"></p><div class="overview-stats"><span>강조 센서 <strong id="overview-selected">0</strong>개</span><span>실제 설치 센서 <strong id="overview-measured">{{ measured_count }}</strong>개</span><span>추천 위치 <strong id="overview-recommended">{{ recommended_count }}</strong>개</span></div>
+  <button type="button" id="enter-simulator" class="btn overview-enter">온실 내부 탐색하기 <span aria-hidden="true">→</span></button>
+  <button type="button" id="enter-preview" class="overview-preview" aria-label="온실 프리뷰를 클릭해 내부 탐색하기"><img src="{% static 'images/greenhouse-isometric-preview.png' %}" alt="베이지색 아치 골조와 반투명 피복, 토마토 재배 베드가 있는 아이소메트릭 온실 디자인 프리뷰" width="1074" height="1032"><span class="overview-image-hint">클릭하여 온실 안으로 들어가기 <span aria-hidden="true">→</span></span></button>
+  <div class="sensor-legend" aria-label="센서 색상 범례"><span><i class="legend-dot measured"></i>회색 · 실제 설치 위치</span><span><i class="legend-dot recommended"></i>블루 · 최적 조합 선정 / 추천 위치</span></div>
+  <p class="overview-caption">공통 디자인 프리뷰이며, 실제 온실 구조나 센서 위치를 나타내지 않습니다.</p>
+</section>
+<div class="app" id="fps-exploring" hidden>
+  <header>
+    <div>
+      <h1>3D 시뮬레이터 <span class="chip" id="ghName">{{ simulator_data.config.name }}</span></h1>
+      <div class="sub" id="ghDim">길이 {{ simulator_data.config.length }}m × 폭 {{ simulator_data.config.width }}m × 높이 {{ simulator_data.config.height }}m</div>
+      <p class="sub" id="active-combination" role="status"></p>
+    </div>
+    <div class="actions">
+      <button class="btn" id="back-overview" type="button">개요로 돌아가기</button>
+      <button class="btn" id="reset" title="R">처음 위치로</button>
+      <button class="btn pri" id="fs">전체화면</button>
+    </div>
+  </header>
+  <main>
+    <section class="stage" id="stage"><div class="fps-load-status" id="fps-load-status" role="status">3D 온실을 불러오는 중…</div>
+      <button type="button" id="exit-fullscreen" class="btn immersive-exit">&#51204;&#52404;&#54868;&#47732; &#51333;&#47308;</button>
+      <canvas id="cv" tabindex="0" aria-label="3D 온실 뷰포트"></canvas>
+      <div class="lbls" id="lbls"></div>
+      <div class="pill hint" id="hint">화면을 클릭하면 시점 조작이 시작됩니다</div>
+      <div class="pill toast" id="toast"></div>
+      <div class="pill keys"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 이동</span><span>마우스 시점</span><span>휠 속도 <b id="spd">2.2</b> m/s</span><span><kbd>Shift</kbd> 빠르게</span><span><kbd>R</kbd> 처음 위치</span><span><kbd>Esc</kbd> 해제</span></div>
+    </section>
+    <aside>
+      <div class="card"><h2>센서 목록 <span class="tag" id="cnt"></span></h2><div class="list" id="list"></div><div class="warn" id="warn"></div></div>
+      <div class="card" id="detail"><h2>센서 상세</h2><div class="empty">목록이나 화면의 센서 마커를 선택하세요.</div></div>
+      <div class="sensor-legend" aria-label="센서 색상 범례"><span><i class="legend-dot measured"></i>실제 설치</span><span><i class="legend-dot recommended"></i>최적 조합 선정 / 추천 위치</span></div>
+      <div class="note"><span id="demoNote">DEMO 좌표는 예시이며 최적 배치 결과가 아닙니다. </span>이 화면은 센서 위치를 보여주는 공간 탐색 도구이고, 온도 분포나 기류를 추정하지 않습니다.</div>
+    </aside>
+  </main>
+</div></div>
+{% endif %}
+{{ simulator_data|json_script:"gso-fps-data" }}
+{% endblock %}
+{% block scripts %}<script type="module" src="{% static 'js/fps-bootstrap.js' %}?v=combo-8"></script>{% endblock %}

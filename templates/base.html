@@ -1,0 +1,54 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff9f7">
+  <title>{% block title %}Greenhouse Sensor Optimizer{% endblock %} · GSO</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'css/brand-refresh.css' %}?v=unified-ui-5">
+  {% block head %}{% endblock %}
+  <link rel="stylesheet" href="{% static 'css/mobile-responsive.css' %}">
+</head>
+<body class="{% if request.resolver_match.url_name == 'dashboard' %}dashboard-page{% endif %}">
+  <div class="app-shell">
+    <header class="site-header{% if request.resolver_match.url_name == 'dashboard' %} site-header-overlay{% endif %}" id="site-header">
+      <div class="header-inner">
+        <a class="brand" href="{% url 'dashboard' %}" aria-label="GSO 홈">
+          <img class="brand-logo" src="{% static 'images/gso-logo.png' %}" width="44" height="39" alt="" aria-hidden="true">
+          <span><strong>GSO</strong><small>GREENHOUSE SENSOR OPTIMIZER</small></span>
+        </a>
+        <button class="nav-toggle" id="menu-toggle" type="button" aria-label="메뉴 열기" aria-controls="primary-navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="site-nav" id="primary-navigation" aria-label="주 메뉴">
+          <a class="site-nav-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}" href="{% url 'dashboard' %}#why-gso"{% if request.resolver_match.url_name == 'dashboard' %} aria-current="page"{% endif %}>서비스</a>
+          <a class="site-nav-link{% if 'greenhouse' in request.resolver_match.url_name %} active{% endif %}" href="{% url 'greenhouse-list' %}"{% if 'greenhouse' in request.resolver_match.url_name %} aria-current="page"{% endif %}>온실 관리</a>
+          <a class="site-nav-link{% if request.resolver_match.url_name == 'analysis' %} active{% endif %}" href="{% url 'analysis' %}"{% if request.resolver_match.url_name == 'analysis' %} aria-current="page"{% endif %}>환경 분석</a>
+          <a class="site-nav-link{% if request.resolver_match.url_name == 'optimization' %} active{% endif %}" href="{% url 'optimization' %}"{% if request.resolver_match.url_name == 'optimization' %} aria-current="page"{% endif %}>센서 배치</a>
+          <a class="site-nav-link{% if request.resolver_match.url_name == 'simulator' %} active{% endif %}" href="{% url 'simulator' %}"{% if request.resolver_match.url_name == 'simulator' %} aria-current="page"{% endif %}>3D 시뮬레이터</a>
+          <a class="site-nav-link{% if request.resolver_match.url_name == 'notifications' %} active{% endif %}" href="{% url 'notifications' %}"{% if request.resolver_match.url_name == 'notifications' %} aria-current="page"{% endif %}>알림</a>
+          <a class="site-nav-link{% if request.resolver_match.url_name == 'report' %} active{% endif %}" href="{% url 'report' %}"{% if request.resolver_match.url_name == 'report' %} aria-current="page"{% endif %}>설치 가이드</a>
+        </nav>
+        {% if request.resolver_match.namespace != 'toss_payments' %}<div class="header-actions"><a class="header-contact-button" href="{% url 'toss_payments:checkout_start' %}">문의하기</a></div>{% endif %}
+      </div>
+    </header>
+    <div class="main-column">
+      <main class="content">
+        {% if messages %}
+          <div class="messages" role="status">
+            {% for message in messages %}{% if 'csv-upload' not in message.tags %}<div class="message {{ message.tags }}">{{ message }}</div>{% endif %}{% endfor %}
+          </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
+      <footer class="app-footer"><span>Greenhouse Sensor Optimizer</span><span>{% if is_demo == False %}등록된 측정 지점 기반 · 독립적인 공간 검증 결과가 아닙니다{% else %}데모 데이터 기반 · 실제 환경 분석 결과가 아닙니다{% endif %}</span></footer>
+    </div>
+  </div>
+  <script src="{% static 'js/app.js' %}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

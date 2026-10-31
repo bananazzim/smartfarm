@@ -1,0 +1,723 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}컨설팅 예약 · 결제 완료 | GSO{% endblock %}
+
+{% block content %}
+
+<style>
+/* =========================================
+   GSO PAYMENT SUCCESS
+   다른 페이지에는 영향을 주지 않음
+========================================= */
+
+body:has(#gso-payment-success) .content {
+  width: 100%;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#gso-payment-success {
+  --success-coral: #c83e5c;
+  --success-coral-light: #fff1f3;
+  --success-text: #20252b;
+  --success-muted: #69737e;
+  --success-border: #e9e6e5;
+
+  min-height: 100vh;
+  background: #faf7f6;
+  color: var(--success-text);
+  font-family: inherit;
+}
+
+#gso-payment-success *,
+#gso-payment-success *::before,
+#gso-payment-success *::after {
+  box-sizing: border-box;
+}
+
+#gso-payment-success [hidden] {
+  display: none !important;
+}
+
+/* 상단 완료 히어로 */
+
+.gso-success-hero {
+  position: relative;
+  min-height: 300px;
+  padding: 76px 24px 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(17, 29, 25, .76),
+      rgba(17, 29, 25, .80)
+    ),
+    url("{% static 'images/gso-seminar-hero.png' %}")
+    center / cover no-repeat;
+}
+
+.gso-success-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #fff;
+}
+
+.gso-success-check {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 19px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--success-coral);
+  color: #fff;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.gso-success-eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: #f7b5c2;
+  font-size: 12px;
+  letter-spacing: .18em;
+  font-weight: 800;
+}
+
+.gso-success-hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(31px, 4vw, 47px);
+  line-height: 1.3;
+  letter-spacing: -.045em;
+  font-weight: 800;
+}
+
+.gso-success-hero p {
+  margin: 16px 0 0;
+  color: rgba(255,255,255,.85);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+/* 본문 */
+
+.gso-success-body {
+  position: relative;
+  padding: 0 24px 100px;
+}
+
+.gso-success-container {
+  width: min(100%, 860px);
+  margin: -40px auto 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* 메인 확인 카드 */
+
+.gso-success-card {
+  padding: 42px 46px;
+  border: 1px solid var(--success-border);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 55px rgba(26,30,34,.065);
+}
+
+.gso-success-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--success-border);
+}
+
+.gso-success-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  margin-bottom: 17px;
+  border-radius: 100px;
+  background: var(--success-coral-light);
+  color: var(--success-coral);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.gso-success-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.gso-success-summary h2 {
+  margin: 0 0 9px;
+  font-size: 23px;
+  letter-spacing: -.035em;
+  line-height: 1.5;
+  font-weight: 800;
+}
+
+.gso-success-summary p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--success-muted);
+}
+
+.gso-success-amount {
+  white-space: nowrap;
+  text-align: right;
+  padding-top: 35px;
+}
+
+.gso-success-amount small {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--success-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gso-success-amount strong {
+  display: block;
+  color: var(--success-text);
+  font-size: 29px;
+  letter-spacing: -.04em;
+  font-weight: 850;
+}
+
+/* 섹션 제목 */
+
+.gso-success-section {
+  padding-top: 34px;
+}
+
+.gso-success-section + .gso-success-section {
+  margin-top: 32px;
+  border-top: 1px solid var(--success-border);
+}
+
+.gso-success-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 23px;
+}
+
+.gso-success-section-number {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: var(--success-coral-light);
+  color: var(--success-coral);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.gso-success-section-heading h3 {
+  margin: 0;
+  color: var(--success-text);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.025em;
+}
+
+/* 정보 목록 */
+
+.gso-success-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px 32px;
+}
+
+.gso-success-info-item {
+  min-width: 0;
+}
+
+.gso-success-info-item.full {
+  grid-column: 1 / -1;
+}
+
+.gso-success-info-label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--success-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.gso-success-info-value {
+  display: block;
+  color: #252a31;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.gso-success-info-value.muted {
+  color: #87909a;
+  font-weight: 500;
+}
+
+.gso-success-order-value {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
+/* 일정 안내 */
+
+.gso-success-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 22px;
+  margin-top: 30px;
+  background: #fff5f6;
+  border: 1px solid #f6dce2;
+  border-radius: 12px;
+}
+
+.gso-success-notice-icon {
+  flex: 0 0 22px;
+  color: var(--success-coral);
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.gso-success-notice strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #873148;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.gso-success-notice p {
+  margin: 0;
+  color: #78545e;
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+/* 버튼 */
+
+.gso-success-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.gso-success-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 54px;
+  padding: 14px 25px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: none !important;
+  transition: .2s ease;
+  cursor: pointer;
+}
+
+.gso-success-button.primary {
+  background: var(--success-coral);
+  color: #fff !important;
+}
+
+.gso-success-button.primary:hover {
+  background: #a72d49;
+}
+
+.gso-success-button.secondary {
+  border-color: #e6e3e3;
+  background: #fff;
+  color: #313b43 !important;
+}
+
+.gso-success-button.secondary:hover {
+  background: #f7f4f4;
+}
+
+/* 하단 문구 */
+
+.gso-success-footer {
+  padding: 24px 15px;
+  text-align: center;
+  color: #8b9299;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+  .gso-success-hero {
+    min-height: 280px;
+    padding: 65px 20px 85px;
+  }
+
+  .gso-success-body {
+    padding: 0 14px 65px;
+  }
+
+  .gso-success-container {
+    margin-top: -35px;
+  }
+
+  .gso-success-card {
+    padding: 28px 21px;
+    border-radius: 17px;
+  }
+
+  .gso-success-summary {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .gso-success-amount {
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .gso-success-info-grid {
+    grid-template-columns: 1fr;
+    gap: 21px;
+  }
+
+  .gso-success-info-item.full {
+    grid-column: auto;
+  }
+
+  .gso-success-section {
+    padding-top: 27px;
+  }
+
+  .gso-success-actions {
+    flex-direction: column;
+  }
+
+  .gso-success-button {
+    width: 100%;
+  }
+
+  .gso-success-notice {
+    padding: 18px;
+  }
+}
+</style>
+
+
+<div
+  id="gso-payment-success"
+  data-order-number="{{ order.order_number }}"
+>
+
+  <!-- 성공 히어로 -->
+  <section class="gso-success-hero">
+    <div class="gso-success-hero-inner">
+
+      <div class="gso-success-check" aria-hidden="true">
+        ✓
+      </div>
+
+      <span class="gso-success-eyebrow">
+        GSO CONSULTING
+      </span>
+
+      <h1>결제가 완료되었습니다.</h1>
+
+      <p>
+        황조롱이 GSO 컨설팅 신청이 접수되었습니다.<br>
+        아래에서 예약 정보를 확인해 주세요.
+      </p>
+
+    </div>
+  </section>
+
+
+  <!-- 결제 완료 상세 -->
+  <section class="gso-success-body">
+    <div class="gso-success-container">
+
+      <div class="gso-success-card">
+
+        <!-- 결제 요약 -->
+        <div class="gso-success-summary">
+
+          <div>
+            <div class="gso-success-status">
+              <span class="gso-success-status-dot"></span>
+              결제 승인 완료
+            </div>
+
+            <h2>{{ order.product_name }}</h2>
+
+            <p>
+              온실 환경 및 센서 배치 맞춤 컨설팅
+            </p>
+          </div>
+
+          <div class="gso-success-amount">
+            <small>결제 금액</small>
+
+            <strong
+              id="gso-success-amount"
+              data-amount="{{ order.amount }}"
+            >
+              {{ order.amount }}원
+            </strong>
+          </div>
+
+        </div>
+
+
+        <!-- 01. 예약자 정보 -->
+        <section class="gso-success-section">
+
+          <div class="gso-success-section-heading">
+            <span class="gso-success-section-number">01</span>
+            <h3>예약자 정보</h3>
+          </div>
+
+          <div class="gso-success-info-grid">
+
+            <div class="gso-success-info-item">
+              <span class="gso-success-info-label">
+                예약자 성함
+              </span>
+              <strong
+                class="gso-success-info-value"
+                id="gso-success-customer-name"
+              >
+                {{ order.customer_name }}
+              </strong>
+            </div>
+
+            <div class="gso-success-info-item">
+              <span class="gso-success-info-label">
+                전화번호
+              </span>
+              <strong
+                class="gso-success-info-value"
+                id="gso-success-customer-phone"
+              >
+                {{ order.customer_phone }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- 02. 희망 상담 일정 -->
+        <section class="gso-success-section">
+
+          <div class="gso-success-section-heading">
+            <span class="gso-success-section-number">02</span>
+            <h3>상담 신청 내역</h3>
+          </div>
+
+          <div class="gso-success-info-grid">
+
+            <div class="gso-success-info-item">
+              <span class="gso-success-info-label">
+                희망 상담 날짜
+              </span>
+              <strong
+                class="gso-success-info-value"
+                id="gso-success-consulting-date"
+              >
+                {{ order.consulting_date|date:"Y년 n월 j일 (l)" }}
+              </strong>
+            </div>
+
+            <div class="gso-success-info-item">
+              <span class="gso-success-info-label">
+                희망 상담 시간
+              </span>
+              <strong
+                class="gso-success-info-value"
+                id="gso-success-consulting-time"
+              >
+                {{ order.consulting_time|time:"A g:i" }}
+              </strong>
+            </div>
+
+            {% if order.greenhouse_location %}
+            <div
+              class="gso-success-info-item full"
+              id="gso-success-location-row"
+            >
+              <span class="gso-success-info-label">
+                온실 위치
+              </span>
+              <strong
+                class="gso-success-info-value"
+                id="gso-success-location"
+              >              </strong>
+            </div>
+            {% endif %}
+
+            {% if order.consulting_request %}
+            <div
+              class="gso-success-info-item full"
+              id="gso-success-request-row"
+            >
+              <span class="gso-success-info-label">
+                요청사항
+              </span>
+              <span
+                class="gso-success-info-value"
+                id="gso-success-request"
+              >              </span>
+            </div>
+            {% endif %}
+
+          </div>
+
+        </section>
+
+
+        <!-- 03. 결제 정보 -->
+        <section class="gso-success-section">
+
+          <div class="gso-success-section-heading">
+            <span class="gso-success-section-number">03</span>
+            <h3>결제 상세 정보</h3>
+          </div>
+
+          <div class="gso-success-info-grid">
+
+            <div class="gso-success-info-item full">
+              <span class="gso-success-info-label">
+                주문번호
+              </span>
+              <strong class="gso-success-info-value gso-success-order-value">
+                {{ order.order_number }}
+              </strong>
+            </div>
+
+            <div class="gso-success-info-item">
+              <span class="gso-success-info-label">
+                결제 상태
+              </span>
+              <strong class="gso-success-info-value">
+                {{ order.get_status_display }}
+              </strong>
+            </div>
+
+            <div class="gso-success-info-item">
+              <span class="gso-success-info-label">
+                결제 완료 일시
+              </span>
+              <strong class="gso-success-info-value">
+                {% if order.payment_completed_at %}
+                  {{ order.payment_completed_at|date:"Y.m.d H:i" }}
+                {% else %}
+                  확인 필요
+                {% endif %}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- 상담 일정 안내 -->
+        <div class="gso-success-notice" role="status">
+
+          <span class="gso-success-notice-icon">ⓘ</span>
+
+          <div>
+            <strong>
+              상담 일정은 아직 확정되지 않았습니다.
+            </strong>
+
+            <p>
+              입력하신 날짜와 시간은 희망 상담 일정입니다.<br>
+              우리 사장님과 소중한 시간을 갖기전에,
+              연락을 먼저 드려 일정을 확정하고 있습니다.
+              조만간 뵙겠습니다 ~ ^^
+            </p>
+          </div>
+
+        </div>
+
+        <!-- 하단 버튼 -->
+        <div class="gso-success-actions">
+
+          <a href="/" class="gso-success-button primary">
+            홈페이지로 돌아가기 →
+          </a>
+
+          <a
+            href="{% url 'toss_payments:checkout_start' %}"
+            class="gso-success-button secondary"
+          >
+            문의 페이지 보기
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <p class="gso-success-footer">
+        황조롱이 GSO · Greenhouse Sensor Optimizer<br>
+        주문 및 상담 관련 문의 시 주문번호를 함께 알려주세요.
+      </p>
+
+    </div>
+  </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+(function () {
+  "use strict";
+
+  // 결제 금액 천 단위 구분
+  const amountElement = document.getElementById(
+    "gso-success-amount"
+  );
+
+  if (amountElement) {
+    const amount = Number(amountElement.dataset.amount);
+
+    if (Number.isFinite(amount)) {
+      amountElement.textContent =
+        amount.toLocaleString("ko-KR") + "원";
+    }
+  }
+})();
+</script>
+
+{% endblock %}

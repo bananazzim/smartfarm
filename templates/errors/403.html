@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block title %}접근할 수 없습니다{% endblock %}{% block content %}<div class="card error-page"><span>403</span><h1>접근 권한이 없습니다</h1><p>요청 권한 또는 보안 토큰을 확인해 주세요.</p><a class="button button-primary" href="{% url 'dashboard' %}">대시보드로</a></div>{% endblock %}

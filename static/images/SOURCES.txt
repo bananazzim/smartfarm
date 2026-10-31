@@ -1,0 +1,92 @@
+greenhouse-unsplash-eoj6t-cMtNs.jpg
+Photo: "A large greenhouse filled with lots of green plants" (photo eoj6t-cMtNs)
+Photographer: Wei (https://unsplash.com/@chanwei_snap)
+Photo page: https://unsplash.com/photos/a-large-greenhouse-filled-with-lots-of-green-plants-eoj6t-cMtNs
+Image file: https://images.unsplash.com/photo-1708796705570-33fd29ef67d0?fm=jpg&fit=crop&w=1440&q=82
+License: Unsplash License, https://unsplash.com/license
+The Unsplash License permits free commercial and non-commercial use. Attribution is not required; this source record is retained for provenance.
+
+Photo: "Hydroponic Greenhouse in Armenia"
+Photographer: Narek75
+Photo page: https://commons.wikimedia.org/wiki/File:Hydroponic_Greenhouse_in_Armenia.jpg
+Image file: https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Hydroponic_Greenhouse_in_Armenia.jpg/1920px-Hydroponic_Greenhouse_in_Armenia.jpg
+Local file: greenhouse-hydroponic.jpg
+Local optimization: resized to 1600 × 1200 and recompressed as JPEG (quality 82).
+License: Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0). Preserve attribution and share-alike terms for adaptations.
+
+Photo: "A group of lined tomatoes in a greenhouse"
+Photographer: Shixart1985
+Photo page: https://commons.wikimedia.org/wiki/File:A_group_of_lined_tomatoes_in_a_greenhouse.jpg
+Image file: https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/A_group_of_lined_tomatoes_in_a_greenhouse.jpg/1920px-A_group_of_lined_tomatoes_in_a_greenhouse.jpg
+Local file: greenhouse-tomatoes.jpg
+Local optimization: resized to 1600 × 1068 and recompressed as JPEG (quality 82).
+License: Creative Commons Attribution 2.0 Generic (CC BY 2.0). Preserve attribution.
+
+Photo: "Greenhouse agriculture (9254)"
+Photographer: Lance Cheung/USDA
+Photo page: https://commons.wikimedia.org/wiki/File:Greenhouse_agriculture_(9254).jpg
+Image file: https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Greenhouse_agriculture_%289254%29.jpg/1920px-Greenhouse_agriculture_%289254%29.jpg
+Local file: greenhouse-agriculture.jpg
+Local optimization: resized to 1600 × 1067 and recompressed as JPEG (quality 82).
+License: Public domain (USDA photograph).
+
+Photo: "Greenhouse for strawberries in Japan"
+Photographer: Moja~commonswiki (assumed from copyright claims; no machine-readable author supplied)
+Photo page: https://commons.wikimedia.org/wiki/File:Greenhouse_for_strawberry.jpg
+Image file: https://upload.wikimedia.org/wikipedia/commons/8/8f/Greenhouse_for_strawberry.jpg
+Local file: greenhouse-strawberry.jpg
+License: Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0).
+Preserve attribution and share-alike terms for adaptations.
+
+GREENHOUSE USE CASE GALLERY
+The gallery uses seven local assets. Card 01 is an original project-created
+vector. Card 02 uses the Unsplash photo listed below. Card 03 is an original
+project-created vector. Card 04 uses a
+Rawpixel photograph delivered as WebP and listed as CC0 1.0 by Openverse.
+Cards 05 and 06 use distinct Flickr photographs under CC BY 2.0. Card 07
+uses a Wikimedia Commons photograph under CC BY-SA 3.0. No gallery asset is
+reused for another card.
+
+Local file: use-cases/use-case-monitoring.webp
+Photo: "Engineers monitor crops in sustainable indoor farm"
+Photographer: ThisisEngineering
+Photo page: https://unsplash.com/photos/man-in-pink-dress-shirt-holding-black-smartphone-6K2xWSA83g0
+Image file: https://images.unsplash.com/photo-1580982186123-27ab767589aa
+License: Unsplash License, https://unsplash.com/license. The photo is listed as a free (non-Premium) Unsplash image. The local WebP is resized to 1200px wide for the card.
+
+Local file: use-cases/use-case-sensor-placement.svg
+Image: Original project-created vector illustration with shaded 3D sensor probes, candidate coordinates, and the training-MAE ranking criterion used by optimization/engine.py.
+Source: Created for this project; no external image or third-party assets used.
+
+Local file: use-cases/use-case-spatial-view.svg
+Image: Original vector illustration based on the GSO 3D greenhouse simulator's greenhouse frame, spatial grid, and sensor-marker scene.
+Source: Created for this project; no external image or third-party assets used.
+
+Local file: use-cases/use-case-climate-analysis.webp
+Photo: "Aquaponics hydroponics farming fish lettuce"
+Photographer: Not listed
+Photo page: https://www.rawpixel.com/image/3339271/free-photo-image-agriculture-aquaponics-botanical
+Openverse record: 6c20a8f5-2dd3-45f2-b641-65e33d491e23
+Image file: https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L3drODc3MjgzODQtaW1hZ2Uta3A2aXBuZzAuanBn.jpg
+License: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/1.0/ (as listed by Openverse)
+
+Local file: use-cases/use-case-crop-management.jpg
+Photo: "Supercomputing"
+Photographer: Idaho National Laboratory
+Photo page: https://www.flickr.com/photos/30369883@N03/6236052094
+Image file: https://live.staticflickr.com/6036/6236052094_8eb1dc2657_b.jpg
+License: Creative Commons Attribution 2.0 Generic (CC BY 2.0), https://creativecommons.org/licenses/by/2.0/. Credit Idaho National Laboratory.
+
+Local file: use-cases/use-case-data-quality.jpg
+Photo: "Soybean Research Greenhouse"
+Photographer: UnitedSoybeanBoard
+Photo page: https://www.flickr.com/photos/95352257@N06/9624327760
+Openverse record: 3d5eaa1b-c3f9-4608-858f-aec4bfd4402a
+Image file: https://live.staticflickr.com/2868/9624327760_353373886c_b.jpg
+License: Creative Commons Attribution 2.0 Generic (CC BY 2.0), https://creativecommons.org/licenses/by/2.0/. Credit UnitedSoybeanBoard.
+
+Local file: use-cases/use-case-installation-planning.jpg
+Photo: "TomateJungpflanzenAnzuchtNiederlande"
+Photographer: Goldlocki
+Photo page: https://commons.wikimedia.org/wiki/File:TomateJungpflanzenAnzuchtNiederlande.jpg
+License: Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0), https://creativecommons.org/licenses/by-sa/3.0/

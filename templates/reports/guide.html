@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}분석 결과 및 설치 가이드{% endblock %}
+{% block breadcrumb %}Insights <span>/</span> 분석 결과 및 설치 가이드{% endblock %}
+{% block content %}
+<div class="page-heading heading-row report-heading"><div><div class="eyebrow">INSTALLATION GUIDE</div><h1>분석 결과 및 설치 가이드</h1><p>생성 데이터 기반 분석 내용을 투명하게 정리한 화면입니다.</p></div><button type="button" class="button button-secondary no-print" onclick="window.print()">인쇄 / PDF 저장</button></div>
+<div class="notice notice-sample no-print"><span class="notice-icon">i</span><div><strong>데모 데이터 분석 결과 · 검증 예정</strong><p>브라우저 인쇄 메뉴에서 PDF로 저장할 수 있습니다. 본 결과는 실제 설치 권고가 아닙니다.</p></div></div>
+<article class="card report-cover"><span class="report-tag">데모 데이터</span><div class="eyebrow">GREENHOUSE SENSOR OPTIMIZER</div><h2>{{ greenhouse.name|default:"데모 온실" }} 설치 시나리오</h2><p>센서 3개 조합의 시계열 오차를 확인하는 생성 데이터 기반 분석 자료입니다.</p></article>
+<section class="two-column report-grid">
+  <article class="card"><div class="section-heading"><div><h2>온실 기본 정보</h2><p>모델의 기하학적 기준값</p></div></div>
+    {% if greenhouse %}<dl class="report-facts"><div><dt>온실명</dt><dd>{{ greenhouse.name }}</dd></div><div><dt>형태</dt><dd>{{ greenhouse.get_shape_display }}</dd></div><div><dt>크기 (L × W × H)</dt><dd>{{ greenhouse.length_m }} × {{ greenhouse.width_m }} × {{ greenhouse.height_m }}m</dd></div><div><dt>환기 방식</dt><dd>{{ greenhouse.ventilation }}</dd></div><div><dt>작물</dt><dd>{{ greenhouse.crop|default:"미지정" }}</dd></div></dl>{% else %}<p>온실 등록 시 표시됩니다.</p>{% endif %}
+  </article>
+  <article class="card"><div class="section-heading"><div><h2>추천 배치 좌표</h2><p>조합 분석 추천 지점의 예시 좌표</p></div><span class="soft-tag">데모</span></div><div class="sensor-coordinate-grid">{% for point in sensor_points %}<div class="sensor-coordinate-card"><span>센서 {{ point.name }}</span><dl><div><dt>x · 길이</dt><dd>{{ point.x }}m</dd></div><div><dt>y · 폭</dt><dd>{{ point.y }}m</dd></div><div><dt>z · 높이</dt><dd>{{ point.z }}m</dd></div></dl></div>{% empty %}<p class="muted">온실 등록 후 좌표가 표시됩니다.</p>{% endfor %}</div><p class="muted small-text">좌표계: x=길이, y=폭, z=바닥 기준 높이. 데모 배치이며 실제 설치 권고가 아닙니다.</p></article>
+</section>
+<section class="two-column report-grid">
+  <article class="card"><div class="section-heading"><div><h2>분석 방법과 오차</h2><p>시간 순서 학습/검증 분리</p></div></div>
+    <dl class="report-facts"><div><dt>후보 지점</dt><dd>{{ evaluation.candidate_count }}개 지점 중 3개 조합 ({{ evaluation.combination_count }}개 조합)</dd></div><div><dt>추천 조합</dt><dd>{{ evaluation.recommended.sensors|join:", " }}</dd></div><div><dt>검증 온도 MAE / RMSE</dt><dd>{{ evaluation.recommended.test.temperature.mae|floatformat:3 }}°C / {{ evaluation.recommended.test.temperature.rmse|floatformat:3 }}°C</dd></div><div><dt>검증 습도 MAE / RMSE</dt><dd>{{ evaluation.recommended.test.humidity.mae|floatformat:3 }}% / {{ evaluation.recommended.test.humidity.rmse|floatformat:3 }}%</dd></div><div><dt>사용 데이터</dt><dd>고정 시드 생성 가상 시계열</dd></div><div><dt>수집 기간</dt><dd>생성 데이터 기준 · 실제 수집 기간 아님</dd></div></dl>
+  </article>
+  <article class="card limitation-card"><h2>한계와 검증 현황</h2><ul><li>참조값은 데모 측정 지점들의 평균이며 실제 공간 평균을 보장하지 않습니다.</li><li>온실 크기만으로 온도·습도 분포, 기류 또는 미세기후를 예측하지 않습니다.</li><li>실측 데이터 수집과 독립적인 모델 검증은 <strong>검증 예정</strong>입니다.</li><li>현장 설치에 따른 위치 적합성, 센서 정확도, 성능 개선율은 <strong>검증 예정</strong>이며 수치로 주장하지 않습니다.</li></ul></article>
+</section>
+<div class="print-footer">Greenhouse Sensor Optimizer · 데모 데이터 · 실제 센서 분석 결과가 아닙니다.</div>
+{% endblock %}

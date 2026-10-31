@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}온실 관리{% endblock %}
+{% block breadcrumb %}Workspace <span>/</span> 온실 관리{% endblock %}
+{% block content %}
+<div class="page-heading heading-row"><div><div class="eyebrow">GREENHOUSE</div><h1>온실 관리</h1><p>온실 크기와 재배 정보를 관리합니다.</p></div><a class="button button-primary" href="{% url 'greenhouse-create' %}"><span>＋</span> 온실 등록</a></div>
+<div class="notice notice-sample"><span class="notice-icon">i</span><div><strong>시뮬레이터 크기 기준</strong><p>저장한 길이·폭·높이는 3D 모델과 기본 예시 좌표 계산에 반영됩니다.</p></div></div>
+<section class="greenhouse-grid">
+  {% for greenhouse in greenhouses %}
+    <article class="card greenhouse-card">
+      <div class="greenhouse-card-art"><span class="art-house">⌂</span><span class="soft-tag">{{ greenhouse.get_shape_display }}</span></div>
+      <div class="greenhouse-card-body"><div class="section-heading"><h2>{{ greenhouse.name }}</h2><span class="pill pill-neutral">DEMO</span></div>
+        <p>{{ greenhouse.crop|default:"작물 미지정" }} · {{ greenhouse.ventilation }}</p>
+        <div class="dimension-row"><span>길이 <strong>{{ greenhouse.length_m }}m</strong></span><span>폭 <strong>{{ greenhouse.width_m }}m</strong></span><span>높이 <strong>{{ greenhouse.height_m }}m</strong></span></div>
+        <div class="card-actions"><a class="button button-secondary" href="{% url 'greenhouse-detail' greenhouse.pk %}">상세 보기</a><a class="button button-plain" href="{% url 'greenhouse-update' greenhouse.pk %}">정보 수정</a></div>
+      </div>
+    </article>
+  {% empty %}
+    <div class="card empty-state"><span class="empty-symbol">⌂</span><h2>등록된 온실이 없습니다</h2><p>온실 정보를 등록하면 3D 시뮬레이터의 크기에 반영됩니다.</p><a class="button button-primary" href="{% url 'greenhouse-create' %}">첫 온실 등록</a></div>
+  {% endfor %}
+</section>
+{% endblock %}

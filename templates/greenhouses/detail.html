@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ greenhouse.name }}{% endblock %}
+{% block breadcrumb %}Workspace <span>/</span> <a href="{% url 'greenhouse-list' %}">온실 관리</a> <span>/</span> {{ greenhouse.name }}{% endblock %}
+{% block content %}
+<div class="page-heading heading-row"><div><div class="eyebrow">GREENHOUSE PROFILE</div><h1>{{ greenhouse.name }}</h1><p>온실 등록 정보와 최근 저장 데이터를 확인합니다.</p></div><a class="button button-secondary" href="{% url 'greenhouse-update' greenhouse.pk %}">정보 수정</a></div>
+<div class="notice notice-sample"><span class="notice-icon">i</span><div><strong>데모 구성 · 센서 실연결 상태가 아닙니다</strong><p>등록 정보는 사용자가 입력한 값입니다. 측정값은 생성 데이터와 구분됩니다.</p></div></div>
+<div class="stat-grid detail-stats">
+  <article class="stat-card"><div class="stat-top">형태</div><div class="stat-value compact-value">{{ greenhouse.get_shape_display }}</div><div class="stat-foot">{{ greenhouse.crop|default:"작물 미지정" }}</div></article>
+  <article class="stat-card"><div class="stat-top">크기 (L × W × H)</div><div class="stat-value compact-value">{{ greenhouse.length_m }} × {{ greenhouse.width_m }} × {{ greenhouse.height_m }}<small>m</small></div><div class="stat-foot">{{ greenhouse.ventilation }}</div></article>
+  <article class="stat-card"><div class="stat-top">구성 센서 수</div><div class="stat-value">{{ greenhouse.sensor_count }}<small>개</small></div><div class="stat-foot">센서 연결 의미가 아닌 구성 수</div></article>
+</div>
+<article class="card"><div class="section-heading"><div><h2>최근 측정 기록</h2><p>실제 데이터가 들어온 경우 출처를 함께 표시합니다.</p></div><a class="text-link" href="{% url 'analysis' %}?greenhouse={{ greenhouse.pk }}">분석 열기 →</a></div>
+  <div class="table-wrap"><table><thead><tr><th>시각</th><th>센서</th><th>온도</th><th>습도</th><th>출처</th></tr></thead><tbody>
+    {% for item in measurements %}<tr><td>{{ item.timestamp|date:"Y-m-d H:i" }}</td><td>{{ item.sensor.name }}</td><td>{{ item.temperature|floatformat:1 }} °C</td><td>{{ item.humidity|floatformat:1 }} %</td><td><span class="pill pill-neutral">{{ item.get_source_display }}</span></td></tr>{% empty %}<tr><td colspan="5" class="table-empty">저장된 측정 데이터가 없습니다. 데모 데이터는 분석 화면에서 확인할 수 있습니다.</td></tr>{% endfor %}
+  </tbody></table></div>
+</article>
+{% endblock %}

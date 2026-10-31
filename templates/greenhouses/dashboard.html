@@ -1,0 +1,3347 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}대시보드{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/use-case-gallery.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* ================================================
+   GSO DASHBOARD — FINAL DESIGN
+   Pretendard / Coral / Highlight Animation
+================================================ */
+
+.dashboard-hero,
+.gso-closing,
+.gso-faq {
+  font-family: "Pretendard", -apple-system,
+               BlinkMacSystemFont, "Segoe UI",
+               sans-serif;
+}
+
+/* ================================================
+   1. HERO — HIGHLIGHT ANIMATION
+================================================ */
+
+.dashboard-hero .hero-copy {
+  max-width: 1280px;
+  position: relative;
+  z-index: 3;
+}
+
+.dashboard-hero .gso-hero-headline {
+  margin: 0 0 38px;
+  max-width: 1160px;
+
+  font-size: clamp(34px, 3.7vw, 64px);
+  font-weight: 800;
+  line-height: 1.38;
+  letter-spacing: -0.055em;
+  color: #ffffff;
+  word-break: keep-all;
+}
+
+.dashboard-hero .gso-hero-headline-line {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: gsoHeroReveal .7s ease forwards;
+}
+
+.dashboard-hero .gso-hero-headline-line:nth-child(2) {
+  animation-delay: .34s;
+}
+
+.dashboard-hero .gso-coral-text {
+  color: #ef7890;
+}
+
+.dashboard-hero .gso-highlight {
+  display: inline;
+  background-image: linear-gradient(
+    transparent 56%,
+    rgba(233, 106, 134, .40) 56%,
+    rgba(233, 106, 134, .40) 91%,
+    transparent 91%
+  );
+
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0% 100%;
+  animation: gsoHighlightDraw .9s ease forwards;
+  animation-delay: .4s;
+}
+
+.dashboard-hero .gso-highlight.second {
+  animation-delay: .9s;
+}
+
+.dashboard-hero .gso-hero-subtitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  margin: 0;
+  max-width: 900px;
+
+  color: rgba(255,255,255,.97);
+  font-size: clamp(20px, 2vw, 29px);
+  font-weight: 600;
+  line-height: 1.7;
+  letter-spacing: -.035em;
+  word-break: keep-all;
+}
+
+.dashboard-hero .gso-hero-subtitle-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: gsoHeroReveal .65s ease forwards;
+  animation-delay: .8s;
+}
+
+.dashboard-hero .gso-hero-subtitle-line:nth-child(2) {
+  animation-delay: 1.05s;
+}
+
+.dashboard-hero .gso-hero-underline {
+  display: inline-block;
+  position: relative;
+  font-weight: 800;
+}
+
+.dashboard-hero .gso-hero-underline::after {
+  content: "";
+  position: absolute;
+  bottom: .06em;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: #ffffff;
+  border-radius: 10px;
+
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: gsoUnderlineDraw .85s ease forwards;
+  animation-delay: 1.38s;
+}
+
+@keyframes gsoHeroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gsoHighlightDraw {
+  from {
+    background-size: 0% 100%;
+  }
+
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes gsoUnderlineDraw {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.dashboard-hero .hero-scroll-link {
+  z-index: 4;
+}
+
+/* ================================================
+   2. GREENHOUSE SNAPSHOT
+================================================ */
+
+.dashboard-metrics {
+  padding: clamp(42px, 5vw, 72px) 0 !important;
+  background: #ffffff !important;
+}
+
+.dashboard-metrics .snapshot-panel {
+  padding: clamp(24px, 3.4vw, 44px);
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 22px;
+}
+
+.dashboard-metrics .snapshot-heading {
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 17px !important;
+}
+
+.dashboard-metrics .snapshot-heading .eyebrow {
+  color: #e64b6a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.dashboard-metrics .snapshot-heading h2 {
+  margin: 12px 0 8px;
+  color: #171717;
+  font-size: clamp(32px, 3.2vw, 40px);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: 1.2;
+}
+
+.dashboard-metrics .snapshot-heading p {
+  margin: 0;
+  color: #667085;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.dashboard-metrics .snapshot-heading .soft-tag {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  background: #fff0f2;
+  color: #b63854;
+  font-size: 11px;
+}
+
+.dashboard-metrics .stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  gap: 0 !important;
+  margin: 0 !important;
+}
+
+.dashboard-metrics .stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 0;
+  min-height: 156px;
+  padding: 22px 28px !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.dashboard-metrics .stat-card:nth-child(odd) {
+  border-right: 1px solid #eaeaea !important;
+}
+
+.dashboard-metrics .stat-card:nth-child(-n+2) {
+  border-bottom: 1px solid #eaeaea !important;
+}
+
+.dashboard-metrics .stat-card:hover {
+  transform: none;
+  box-shadow: none !important;
+}
+
+.dashboard-metrics .stat-top {
+  margin-bottom: 15px;
+  color: #475467;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dashboard-metrics .metric-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  background: transparent;
+}
+
+.dashboard-metrics .metric-icon svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.dashboard-metrics .temp-icon,
+.dashboard-metrics .sensor-icon {
+  color: #e64b6a;
+}
+
+.dashboard-metrics .humidity-icon,
+.dashboard-metrics .status-icon {
+  color: #637b91;
+}
+
+.dashboard-metrics .stat-value {
+  margin: 0 0 7px;
+  color: #171717;
+  font-size: clamp(38px, 4vw, 46px);
+  font-weight: 700;
+  letter-spacing: -1.7px;
+  line-height: 1.12;
+}
+
+.dashboard-metrics .stat-value small {
+  margin-left: 5px;
+  color: #344054;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.dashboard-metrics .stat-foot {
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.dashboard-metrics .snapshot-sparkline {
+  display: block;
+  width: min(100%, 280px);
+  height: 40px;
+  margin-top: 9px;
+  overflow: visible;
+}
+
+.dashboard-metrics [data-sparkline="temperature"] {
+  color: #d45b70;
+}
+
+.dashboard-metrics [data-sparkline="humidity"] {
+  color: #74889a;
+}
+
+.dashboard-metrics .snapshot-sparkline-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.dashboard-metrics .snapshot-sparkline-dot {
+  fill: currentColor;
+  opacity: 0;
+}
+
+.dashboard-metrics .snapshot-sparkline-dot.is-active,
+.dashboard-metrics .snapshot-sparkline-dot.is-complete {
+  opacity: 1;
+}
+
+.dashboard-metrics .status-value {
+  gap: 10px;
+  font-size: 38px;
+}
+
+/* ================================================
+   3. CLOSING MESSAGE
+   — 글자 크기 축소
+   — 줄 간격 확대
+   — 두 문단 사이 충분한 여백
+================================================ */
+
+.gso-closing {
+  background: #ffffff;
+  text-align: center;
+  padding: clamp(100px, 11vw, 155px) 24px 80px;
+}
+
+.gso-closing-copy {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+}
+
+.gso-closing-first {
+  margin: 0;
+
+  color: #28282d;
+  font-size: clamp(23px, 2.55vw, 40px);
+  font-weight: 480;
+  line-height: 2.0;
+  letter-spacing: -.045em;
+  word-break: keep-all;
+}
+
+.gso-closing-second {
+  margin: clamp(68px, 7vw, 108px) 0 0;
+
+  color: #25252a;
+  font-size: clamp(26px, 2.75vw, 44px);
+  font-weight: 800;
+  line-height: 1.9;
+  letter-spacing: -.05em;
+  word-break: keep-all;
+}
+
+/* ================================================
+   4. BRAND STATEMENT
+================================================ */
+
+.gso-closing-brand {
+  margin: clamp(110px, 13vw, 180px) auto 0;
+  text-align: center;
+}
+
+.gso-closing-brand h2 {
+  margin: 0 0 clamp(38px, 5vw, 70px);
+
+  font-size: clamp(35px, 4.7vw, 72px);
+  font-weight: 850;
+  line-height: 1.35;
+  letter-spacing: -.06em;
+
+  color: #36363b;
+  word-break: keep-all;
+}
+
+.gso-closing-brand strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .18em;
+
+  font-size: clamp(38px, 5vw, 75px);
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -.06em;
+
+  color: #c83e5c;
+}
+
+.gso-closing-brand .gso-brand-mark {
+  color: #c83e5c;
+}
+
+.gso-closing-brand .gso-brand-logo {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: .95em;
+  object-fit: contain;
+}
+
+/* ================================================
+   5. Q&A
+================================================ */
+
+.gso-faq {
+  padding: 100px 24px 140px;
+  background: #ffffff;
+}
+
+.gso-faq-inner {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+}
+
+.gso-faq-heading {
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.gso-faq-eyebrow {
+  color: #c83e5c;
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.gso-faq-heading h2 {
+  margin: 0;
+
+  color: #31343b;
+  font-size: clamp(31px, 3.7vw, 54px);
+  font-weight: 800;
+  letter-spacing: -.055em;
+}
+
+.gso-faq-list {
+  border-top: 3px solid #c83e5c;
+}
+
+.gso-faq-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.gso-faq-item summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  min-height: 110px;
+  padding: 24px;
+
+  list-style: none;
+  cursor: pointer;
+
+  color: #252a32;
+}
+
+.gso-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.gso-faq-item summary::marker {
+  content: "";
+}
+
+.gso-faq-q {
+  flex: 0 0 auto;
+
+  color: #c7c9cc;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.gso-faq-question {
+  flex: 1;
+  min-width: 0;
+
+  font-size: clamp(18px, 1.95vw, 27px);
+  font-weight: 760;
+  letter-spacing: -.03em;
+  line-height: 1.5;
+}
+
+.gso-faq-arrow {
+  flex: 0 0 52px;
+
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+  background: #c83e5c;
+  color: #ffffff;
+
+  font-size: 28px;
+  line-height: 1;
+
+  transition: transform .25s ease;
+}
+
+.gso-faq-item[open] .gso-faq-arrow {
+  transform: rotate(-90deg);
+}
+
+.gso-faq-answer {
+  padding: 18px 90px 46px 84px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.gso-faq-answer p {
+  margin: 0;
+
+  color: #424952;
+  font-size: clamp(17px, 1.7vw, 23px);
+  font-weight: 460;
+  line-height: 1.9;
+  letter-spacing: -.025em;
+  word-break: keep-all;
+}
+
+.gso-faq-answer p + p {
+  margin-top: 13px;
+}
+
+.gso-faq-answer small {
+  display: block;
+  margin-top: 15px;
+
+  font-size: 13px;
+  color: #727984;
+  line-height: 1.8;
+}
+
+/* ================================================
+   6. ORIGINAL CTA BUTTON
+================================================ */
+
+.dashboard-cta .button-secondary {
+  background: #ffffff !important;
+  color: #20212b !important;
+  border: 1px solid #e8d9dc !important;
+  opacity: 1 !important;
+}
+
+.dashboard-cta .button-secondary:hover {
+  background: #fff0f0 !important;
+  color: #c83e59 !important;
+  border-color: #f26b75 !important;
+}
+
+/* ================================================
+   7. MOBILE
+================================================ */
+
+@media (max-width: 700px) {
+
+  .dashboard-hero .gso-hero-headline {
+    font-size: clamp(28px, 7.2vw, 42px);
+    line-height: 1.4;
+    margin-bottom: 26px;
+  }
+
+  .dashboard-hero .gso-hero-headline-line {
+    width: auto;
+  }
+
+  .dashboard-hero .gso-hero-subtitle {
+    font-size: clamp(17px, 4.5vw, 22px);
+    line-height: 1.7;
+    gap: 4px;
+  }
+
+  .dashboard-metrics {
+    padding: 40px 0 !important;
+  }
+
+  .dashboard-metrics .snapshot-panel {
+    padding: 23px 18px 16px;
+    border-radius: 18px;
+  }
+
+  .dashboard-metrics .snapshot-heading {
+    flex-wrap: wrap;
+    gap: 13px;
+  }
+
+  .dashboard-metrics .snapshot-heading h2 {
+    font-size: 30px;
+  }
+
+  .dashboard-metrics .snapshot-heading p {
+    font-size: 14px;
+  }
+
+  .dashboard-metrics .stat-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-metrics .stat-card {
+    min-height: 125px;
+    padding: 18px 8px !important;
+  }
+
+  .dashboard-metrics .stat-card:nth-child(odd) {
+    border-right: none !important;
+  }
+
+  .dashboard-metrics .stat-card:not(:last-child) {
+    border-bottom: 1px solid #eaeaea !important;
+  }
+
+  .gso-closing {
+    padding: 85px 16px 50px;
+  }
+
+  .gso-closing-first {
+    font-size: clamp(19px, 4.7vw, 28px);
+    line-height: 1.95;
+  }
+
+  .gso-closing-second {
+    margin-top: 65px;
+    font-size: clamp(22px, 5.4vw, 31px);
+    line-height: 1.85;
+  }
+
+  .gso-closing-brand {
+    margin-top: 110px;
+  }
+
+  .gso-closing-brand h2 {
+    font-size: clamp(31px, 7vw, 48px);
+    margin-bottom: 37px;
+  }
+
+  .gso-closing-brand strong {
+    font-size: clamp(33px, 8vw, 48px);
+  }
+
+  .gso-faq {
+    padding: 75px 15px 95px;
+  }
+
+  .gso-faq-heading {
+    margin-bottom: 40px;
+  }
+
+  .gso-faq-heading h2 {
+    font-size: 32px;
+  }
+
+  .gso-faq-item summary {
+    padding: 20px 4px;
+    min-height: 84px;
+    gap: 12px;
+  }
+
+  .gso-faq-q {
+    font-size: 27px;
+  }
+
+  .gso-faq-arrow {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+
+  .gso-faq-answer {
+    padding: 17px 10px 30px 40px;
+  }
+
+  .gso-faq-answer p {
+    font-size: 16px;
+  }
+}
+
+/* 움직임 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+
+  .dashboard-hero .gso-hero-headline-line,
+  .dashboard-hero .gso-hero-subtitle-line {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .dashboard-hero .gso-highlight {
+    animation: none;
+    background-size: 100% 100%;
+  }
+
+  .dashboard-hero .gso-hero-underline::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  .gso-faq-arrow {
+    transition: none;
+  }
+}
+
+
+/* ============================================
+   GSO 최종 타이포그래피 수정
+   1. 빨간 하이라이트 제거
+   2. 첫 화면 글자 크기·자간·줄 간격 축소
+   3. 하단 안내 문구 크기·자간 축소
+   4. 성공사례 제목과 브랜드 간격 축소
+============================================ */
+
+/* 1. 메인 문구 뒤의 빨간색 하이라이트 제거 */
+.dashboard-hero .gso-highlight {
+  background: none !important;
+  background-image: none !important;
+  animation: none !important;
+}
+
+/* 황조롱이 GSO 글씨 자체는 코랄색 유지 */
+.dashboard-hero .gso-coral-text {
+  color: #c83e5c !important;
+}
+
+/* 2. 메인 제목 글자 크기와 자간 조절 */
+.dashboard-hero .gso-hero-headline {
+  font-size: clamp(32px, 3.2vw, 54px) !important;
+  letter-spacing: -0.075em !important;
+  line-height: 1.27 !important;
+  margin-bottom: 34px !important;
+}
+
+/* 제목 두 줄 사이 간격 */
+.dashboard-hero .gso-hero-headline-line {
+  margin-bottom: 8px;
+}
+
+/* 3. '저희가 미친 자신감을 가진 이유' 부분 */
+.dashboard-hero .gso-hero-subtitle {
+  gap: 0 !important;
+  font-size: clamp(19px, 1.65vw, 25px) !important;
+  line-height: 1.38 !important;
+  letter-spacing: -0.065em !important;
+}
+
+/* 보조 문구 두 줄을 서로 가깝게 */
+.dashboard-hero .gso-hero-subtitle-line {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.38 !important;
+  letter-spacing: -0.065em !important;
+}
+
+/* '3분이면 확인 가능합니다' 밑줄은 흰색 유지 */
+.dashboard-hero .gso-hero-underline::after {
+  height: 2px !important;
+}
+
+/* ============================================
+   4. 하단 안내문 - 네 번째 사진 비율
+============================================ */
+
+.gso-closing {
+  padding: 90px 24px 70px !important;
+}
+
+/* 첫 다섯 줄 */
+.gso-closing-first {
+  font-size: clamp(22px, 2.15vw, 35px) !important;
+  font-weight: 450 !important;
+  line-height: 1.68 !important;
+  letter-spacing: -0.065em !important;
+}
+
+/* '함께할 만하다고 느끼셨다면' 두 줄 */
+.gso-closing-second {
+  margin-top: 75px !important;
+  font-size: clamp(24px, 2.35vw, 38px) !important;
+  font-weight: 800 !important;
+  line-height: 1.58 !important;
+  letter-spacing: -0.07em !important;
+}
+
+/* ============================================
+   5. 성공사례 제목 + 황조롱이 GSO
+============================================ */
+
+/* 안내문과 브랜드 사이 */
+.gso-closing-brand {
+  margin-top: 110px !important;
+}
+
+/* 국내 최다 농업 성공사례 */
+.gso-closing-brand h2 {
+  font-size: clamp(36px, 4.2vw, 64px) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.075em !important;
+
+  /* 두 브랜드 문구 사이 간격 축소 */
+  margin-bottom: 22px !important;
+}
+
+/* 황조롱이 GSO */
+.gso-closing-brand strong {
+  color: #c83e5c !important;
+  font-size: clamp(34px, 3.8vw, 58px) !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.075em !important;
+}
+
+/* ============================================
+   6. 모바일 화면 보정
+============================================ */
+
+@media (max-width: 700px) {
+
+  .dashboard-hero .gso-hero-headline {
+    font-size: clamp(27px, 6.5vw, 36px) !important;
+    line-height: 1.35 !important;
+  }
+
+  .dashboard-hero .gso-hero-subtitle {
+    font-size: clamp(17px, 4.1vw, 20px) !important;
+  }
+
+  .gso-closing {
+    padding: 75px 16px 50px !important;
+  }
+
+  .gso-closing-first {
+    font-size: clamp(18px, 4.5vw, 25px) !important;
+    line-height: 1.75 !important;
+  }
+
+  .gso-closing-second {
+    margin-top: 55px !important;
+    font-size: clamp(22px, 5.2vw, 29px) !important;
+    line-height: 1.65 !important;
+  }
+
+  .gso-closing-brand {
+    margin-top: 85px !important;
+  }
+
+  .gso-closing-brand h2 {
+    font-size: clamp(30px, 7vw, 44px) !important;
+    margin-bottom: 18px !important;
+  }
+
+  .gso-closing-brand strong {
+    font-size: clamp(30px, 7vw, 44px) !important;
+  }
+}
+
+
+/* 메인 문구 등장 속도 조금 느리게 */
+.dashboard-hero .gso-hero-headline-line {
+  animation-duration: 1.3s !important;
+}
+
+/* 두 번째 문구 등장 간격 */
+.dashboard-hero .gso-hero-headline-line:nth-child(2) {
+  animation-delay: 0.55s !important;
+}
+
+/* 아래 설명 문구도 천천히 등장 */
+.dashboard-hero .gso-hero-subtitle-line {
+  animation-duration: 1.1s !important;
+}
+
+.dashboard-hero .gso-hero-subtitle-line:nth-child(1) {
+  animation-delay: 1.0s !important;
+}
+
+.dashboard-hero .gso-hero-subtitle-line:nth-child(2) {
+  animation-delay: 1.3s !important;
+}
+
+/* 밑줄이 왼쪽에서 오른쪽으로 그려지는 속도 */
+.dashboard-hero .gso-hero-underline::after {
+  animation-duration: 1.2s !important;
+  animation-delay: 1.65s !important;
+}
+
+/* =========================
+   GSO HERO COPY
+========================= */
+
+.dashboard-hero {
+  position: relative;
+}
+
+.gso-hero-copy {
+  position: absolute;
+  left: clamp(72px, 13vw, 220px);
+  top: clamp(180px, 31vh, 320px);
+  z-index: 3;
+  max-width: 920px;
+  color: #ffffff;
+}
+
+.gso-reveal-group {
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: gsoFadeUp 0.85s ease forwards;
+}
+
+.gso-reveal-group > * {
+  position: relative;
+  z-index: 2;
+}
+
+.gso-reveal-group::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 0.18em;
+  bottom: 0.12em;
+  background: rgba(240, 95, 126, 0.32);
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: 1;
+  border-radius: 6px;
+}
+
+.gso-reveal-main {
+  animation-delay: 0.15s;
+}
+
+.gso-reveal-main::before {
+  animation: gsoHighlight 1.15s ease-out 0.45s forwards;
+}
+
+.gso-reveal-sub {
+  display: block;
+  margin-top: 34px;
+  animation-delay: 1.45s;
+}
+
+.gso-reveal-sub::before {
+  animation: gsoHighlight 0.95s ease-out 1.75s forwards;
+}
+
+.gso-hero-title {
+  margin: 0;
+  font-size: clamp(42px, 4.8vw, 78px);
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.22);
+}
+
+.gso-hero-title + .gso-hero-title {
+  margin-top: 8px;
+}
+
+.gso-coral {
+  color: #f05f7e;
+}
+
+.gso-hero-subtitle {
+  margin: 0;
+  font-size: clamp(18px, 1.7vw, 30px);
+  line-height: 1.35;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.18);
+}
+
+.gso-hero-subtitle + .gso-hero-subtitle {
+  margin-top: 4px;
+}
+
+.gso-hero-subtitle-strong {
+  font-weight: 800;
+}
+
+@keyframes gsoFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gsoHighlight {
+  0% {
+    transform: scaleX(0);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  .gso-hero-copy {
+    left: 56px;
+    top: 220px;
+    max-width: 760px;
+  }
+
+  .gso-reveal-sub {
+    margin-top: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gso-hero-copy {
+    left: 28px;
+    right: 28px;
+    top: 190px;
+    max-width: none;
+  }
+
+  .gso-hero-title {
+    font-size: clamp(34px, 8vw, 52px);
+    line-height: 1.15;
+  }
+
+  .gso-hero-subtitle {
+    font-size: clamp(16px, 4.2vw, 22px);
+    line-height: 1.4;
+  }
+
+  .gso-reveal-sub {
+    margin-top: 22px;
+  }
+}
+
+/* ==========================================
+   GSO 메인 히어로 최종 수정
+   분홍색 하이라이트 및 밑줄 제거
+========================================== */
+
+/* 분홍색 사각형 하이라이트 완전 제거 */
+.dashboard-hero .gso-reveal-group::before,
+.dashboard-hero .gso-reveal-group::after,
+.dashboard-hero .gso-highlight::before,
+.dashboard-hero .gso-highlight::after,
+.dashboard-hero .gso-hero-underline::after {
+  content: none !important;
+  display: none !important;
+  animation: none !important;
+}
+
+/* 기존 하이라이트 배경 및 밑줄 제거 */
+.dashboard-hero .gso-highlight,
+.dashboard-hero .gso-reveal-group,
+.dashboard-hero .gso-hero-title,
+.dashboard-hero .gso-hero-subtitle {
+  background: transparent !important;
+  background-image: none !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+/* 글씨가 화면에서 잘리지 않도록 */
+.dashboard-hero .gso-hero-copy {
+  width: min(1180px, calc(100% - 80px));
+  max-width: 1180px;
+}
+
+/* 큰 글씨 크기 축소 및 간격 조절 */
+.dashboard-hero .gso-hero-title {
+  font-size: clamp(29px, 3.3vw, 56px) !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.065em !important;
+}
+
+.dashboard-hero .gso-hero-title + .gso-hero-title {
+  margin-top: 8px !important;
+}
+
+/* 작은 글씨 */
+.dashboard-hero .gso-hero-subtitle {
+  font-size: clamp(19px, 1.8vw, 27px) !important;
+  line-height: 1.4 !important;
+  letter-spacing: -0.055em !important;
+}
+
+/* 황조롱이 GSO 글씨만 코랄색 유지 */
+.dashboard-hero .gso-coral {
+  color: #c83e5c !important;
+}
+
+/* 1단계: 큰 글씨 두 줄 동시에 등장 */
+.dashboard-hero .gso-reveal-main {
+  animation: gsoFadeUp 1.15s ease-out .2s both !important;
+}
+
+/* 2단계: 작은 글씨 두 줄 동시에 등장 */
+.dashboard-hero .gso-reveal-sub {
+  animation: gsoFadeUp 1.15s ease-out 1.25s both !important;
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .dashboard-hero .gso-hero-copy {
+    left: 24px !important;
+    right: 24px !important;
+    width: calc(100% - 48px) !important;
+  }
+
+  .dashboard-hero .gso-hero-title {
+    font-size: clamp(27px, 6.3vw, 39px) !important;
+  }
+
+  .dashboard-hero .gso-hero-subtitle {
+    font-size: clamp(17px, 4vw, 21px) !important;
+  }
+}
+
+
+/* '3분이면 확인 가능합니다.' 흰색 밑줄 애니메이션 */
+
+.dashboard-hero .gso-underline-text {
+  position: relative;
+  display: inline-block;
+}
+
+.dashboard-hero .gso-underline-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  animation: gsoUnderlineReturn 1.25s ease-out 1.75s both;
+}
+
+@keyframes gsoUnderlineReturn {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-hero .gso-underline-text::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+
+/* ==========================================
+   GSO 히어로 카피 위치 및 그룹 간격 수정
+   이상한마케팅 레이아웃 기준
+========================================== */
+
+/* 전체 카피라이팅을 오른쪽으로 약 30px,
+   위쪽으로 약 5px 이동 */
+@media (min-width: 1025px) {
+  .dashboard-hero .gso-hero-copy {
+    left: 15vw !important;
+    top: 30.5vh !important;
+  }
+}
+
+/* 큰 제목과 작은 설명 사이 간격 확대 */
+.dashboard-hero .gso-reveal-sub {
+  margin-top: 52px !important;
+}
+
+/* 큰 제목 두 줄 사이의 기존 간격 유지 */
+.dashboard-hero .gso-hero-title + .gso-hero-title {
+  margin-top: 8px !important;
+}
+
+/* 작은 설명 두 줄은 서로 가깝게 유지 */
+.dashboard-hero .gso-hero-subtitle + .gso-hero-subtitle {
+  margin-top: 4px !important;
+}
+
+/* 태블릿 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dashboard-hero .gso-hero-copy {
+    left: 9vw !important;
+    top: 30vh !important;
+  }
+
+  .dashboard-hero .gso-reveal-sub {
+    margin-top: 42px !important;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .dashboard-hero .gso-reveal-sub {
+    margin-top: 34px !important;
+  }
+}
+
+
+
+/* GSO 하단 브랜드 메시지 - 여백 균형 조정 */
+
+/* 분홍색 CTA 영역 다음 여백 */
+.gso-closing {
+  padding-top: 240px !important;
+  padding-bottom: 105px !important;
+}
+
+/* 첫 번째 문단: 다섯 줄 */
+.gso-closing-first {
+  font-size: clamp(22px, 2.15vw, 35px) !important;
+  line-height: 1.75 !important;
+  letter-spacing: -0.055em !important;
+}
+
+/* 두 번째 강조 문단: 위 문단과 확실히 분리 */
+.gso-closing-second {
+  margin-top: 100px !important;
+  font-size: clamp(24px, 2.35vw, 38px) !important;
+  line-height: 1.65 !important;
+  letter-spacing: -0.06em !important;
+}
+
+/* 성공사례 제목까지의 여백 */
+.gso-closing-brand {
+  margin-top: 130px !important;
+}
+
+/* 모바일 */
+@media (max-width: 700px) {
+  .gso-closing {
+    padding-top: 75px !important;
+    padding-bottom: 70px !important;
+  }
+
+  .gso-closing-first {
+    line-height: 1.8 !important;
+  }
+
+  .gso-closing-second {
+    margin-top: 70px !important;
+  }
+
+  .gso-closing-brand {
+    margin-top: 90px !important;
+  }
+}
+
+/* =========================================
+   성공사례 배너 섹션
+========================================= */
+.gso-proof-section {
+  position: relative;
+  width: 100%;
+  min-height: 760px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  /* 1번째 사진 배경 넣기 */
+  background-image: url("/static/images/gso-success-bg.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* 배경 어둡게 처리 */
+.gso-proof-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.48),
+      rgba(0, 0, 0, 0.58)
+    );
+  z-index: 1;
+}
+
+.gso-proof-inner {
+  position: relative;
+  z-index: 2;
+  width: min(1200px, calc(100% - 64px));
+  text-align: center;
+  color: #ffffff;
+}
+
+/* 메인 제목 */
+.gso-proof-title {
+  margin: 0;
+  font-size: clamp(42px, 5vw, 76px);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+/* 파란 강조어 대신 코랄 */
+.gso-proof-accent {
+  color: #ef6b72; /* 네 시그니처 코랄 계열 */
+}
+
+/* 서브 제목 */
+.gso-proof-subtitle {
+  margin: 18px 0 300px;
+  font-size: clamp(18px, 1.6vw, 30px);
+  font-weight: 500;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* 가운데 핵심 수치 영역 */
+.gso-proof-stats {
+  margin-bottom: 56px;
+}
+
+.gso-proof-stat-number {
+  margin: 0 0 12px;
+  font-size: clamp(40px, 4vw, 68px);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.gso-proof-stat-label {
+  margin: 0;
+  font-size: clamp(26px, 2.4vw, 48px);
+  font-weight: 800;
+  line-height: 1.22;
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 4px;
+}
+
+/* 설명 문단 */
+.gso-proof-description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gso-proof-description p {
+  margin: 0;
+  font-size: clamp(20px, 1.8vw, 34px);
+  font-weight: 500;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 900px) {
+  .gso-proof-section {
+    min-height: 620px;
+  }
+
+  .gso-proof-inner {
+    width: calc(100% - 36px);
+  }
+
+  .gso-proof-subtitle {
+    margin: 14px 0 40px;
+  }
+
+  .gso-proof-stats {
+    margin-bottom: 40px;
+  }
+}
+
+
+/* '농가 교육 업계 최초!' 문구만 아래로 이동 */
+.gso-proof-stat-label {
+  position: relative;
+  top: 30px;
+}
+
+
+/* GSO 팀 단체사진 */
+
+.gso-team-photo-section {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #111;
+  overflow: hidden;
+}
+
+.gso-team-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+</style>
+
+
+<!-- ================================================
+     1. MAIN HERO
+================================================ -->
+
+<section class="dashboard-hero" aria-label="GSO 소개">
+
+
+  <video
+    class="hero-photo gso-hero-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    aria-hidden="true"
+  >
+    <source src="{% static 'videos/gso-hero.mp4' %}" type="video/mp4">
+  </video>
+
+  <span class="hero-photo-shade" aria-hidden="true"></span>
+
+
+  <div class="gso-hero-copy">
+
+    <div class="gso-reveal-group gso-reveal-main">
+      <h1 class="gso-hero-title">
+        <span class="gso-coral">황조롱이 GSO</span>를 처음 아셨나요?
+      </h1>
+
+      <h1 class="gso-hero-title">
+        그렇다면 아직 문의하지 마세요.
+      </h1>
+    </div>
+
+    <div class="gso-reveal-group gso-reveal-sub">
+      <p class="gso-hero-subtitle">
+        저희가 미친 자신감을 가진 이유
+      </p>
+
+
+      <p class="gso-hero-subtitle gso-hero-subtitle-strong">
+        <span class="gso-underline-text">3분이면 확인 가능합니다.</span>
+      </p>
+
+    </div>
+
+  </div>
+
+
+  </div>
+
+
+</section>
+
+
+
+<!---->
+
+<section class="gso-proof-section">
+  <div class="gso-proof-overlay"></div>
+
+  <div class="gso-proof-inner">
+    <h2 class="gso-proof-title">
+      농사는 감이 아닌,
+      <span class="gso-proof-accent">데이터다</span>
+    </h2>
+
+    <p class="gso-proof-subtitle">
+      수많은 사장님이 직접 경험한 성공사례
+    </p>
+
+    <div class="gso-proof-stats">
+      <p class="gso-proof-stat-number"></p>
+      <p class="gso-proof-stat-label">농가 교육 업계 최초!</p>
+    </div>
+
+    <div class="gso-proof-description">
+      <p>폐업 직접 사장님부터 떼부자 사장님까지</p>
+      <p>오늘도 새로운 성공사례가 끊임없이 추가되고 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GSO 팀 단체사진 -->
+<section class="gso-team-photo-section">
+  <img
+    src="{% static 'images/gso-team-photo.png' %}"
+    alt="황조롱이 GSO 팀 콘셉트 단체사진"
+    class="gso-team-photo"
+    loading="lazy"
+  >
+</section>
+<!-- ================================================
+     2. USE CASE GALLERY
+================================================ -->
+
+<section
+  class="gso-use-cases"
+  id="why-gso"
+  aria-labelledby="gso-use-cases-title"
+>
+
+  <div class="gso-use-cases-heading">
+
+    <div class="gso-use-cases-heading-copy">
+
+      <div class="gso-use-cases-eyebrow">
+        GREENHOUSE USE CASES
+      </div>
+
+      <h2 id="gso-use-cases-title">
+        기록을 넘어<br>
+        현장을 리드하는<br>
+        Data Reader
+      </h2>
+
+      <p>
+        센서 데이터 수집부터 배치 비교, 공간 시각화까지.
+        GSO가 제안하는 스마트팜 데이터 활용 장면을 살펴보세요.
+      </p>
+
+    </div>
+
+    <div class="gso-use-cases-controls">
+
+      <span class="gso-use-cases-note">
+        활용 시나리오 · 현장 참고 사진
+      </span>
+
+      <div class="gso-use-cases-navigation">
+
+        <span
+          class="gso-use-cases-count"
+          aria-live="polite"
+        >
+          <b data-gallery-current>01</b>
+          <i>/</i>
+          <span data-gallery-total>07</span>
+        </span>
+
+        <button
+          class="gso-use-cases-arrow"
+          type="button"
+          data-gallery-prev
+          aria-label="이전 사례"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <button
+          class="gso-use-cases-arrow"
+          type="button"
+          data-gallery-next
+          aria-label="다음 사례"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="gso-use-cases-viewport"
+    data-gallery-viewport
+    tabindex="0"
+    role="region"
+    aria-label="GSO 활용 시나리오 갤러리"
+  >
+
+    <div class="gso-use-cases-track" data-gallery-track>
+
+      <!-- CASE 01 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'optimization' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="gso-use-case-image">
+
+          <img
+            src="{% static 'images/use-cases/use-case-sensor-placement.svg' %}"
+            alt="센서 배치 후보 위치 비교"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            비주얼을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>센서 배치 조합 비교</strong>
+
+          <span>
+            세 센서의 후보 위치 조합과 오차를 비교합니다.
+          </span>
+
+          <b>
+            배치 시나리오 보기
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- CASE 02 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="gso-use-case-image gso-use-case-image-monitoring">
+
+          <img
+            src="{% static 'images/use-cases/use-case-monitoring.webp' %}"
+            alt="온실 환경 데이터를 확인하는 작업자"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            사진을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>온실 환경 모니터링</strong>
+
+          <span>
+            온도와 습도 데이터를 시간 흐름에 따라 확인합니다.
+          </span>
+
+          <b>
+            환경 데이터 분석
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- CASE 03 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'simulator' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="gso-use-case-image">
+
+          <img
+            src="{% static 'images/use-cases/use-case-spatial-view.svg' %}"
+            alt="온실 공간과 센서 좌표의 3D 시각화"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            비주얼을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>온실 공간 시각화</strong>
+
+          <span>
+            3차원 온실 공간에서 센서 위치와 좌표를 검토합니다.
+          </span>
+
+          <b>
+            3D 시뮬레이터 열기
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- CASE 04 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="gso-use-case-image">
+
+          <img
+            src="{% static 'images/use-cases/use-case-climate-analysis.webp' %}"
+            alt="온실에서 재배되고 있는 작물"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            사진을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>환경 변화 분석</strong>
+
+          <span>
+            시간대별 온도·습도 흐름과 센서별 차이를 살펴봅니다.
+          </span>
+
+          <b>
+            분석 화면 둘러보기
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- CASE 05 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'greenhouse-list' %}"
+      >
+
+        <span class="gso-use-case-image">
+
+          <img
+            src="{% static 'images/use-cases/use-case-crop-management.jpg' %}"
+            alt="스마트팜 관련 연구와 데이터 관리"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            사진을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>데이터 기반 재배 관리</strong>
+
+          <span>
+            환경 기록을 바탕으로 온실과 재배 조건을 함께 살펴봅니다.
+          </span>
+
+          <b>
+            온실 관리 살펴보기
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- CASE 06 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="gso-use-case-image">
+
+          <img
+            src="{% static 'images/use-cases/use-case-data-quality.jpg' %}"
+            alt="온실 작물을 관찰하는 연구자"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            사진을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>센서 데이터 품질 점검</strong>
+
+          <span>
+            센서별 기록을 확인하고 분석할 데이터 상태를 살펴봅니다.
+          </span>
+
+          <b>
+            환경 데이터 분석
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- CASE 07 -->
+      <a
+        class="gso-use-case-card"
+        href="{% url 'simulator' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="gso-use-case-image">
+
+          <img
+            src="{% static 'images/use-cases/use-case-installation-planning.jpg' %}"
+            alt="길게 이어진 온실 내부와 작물"
+            loading="lazy"
+            decoding="async"
+          >
+
+          <span
+            class="gso-use-case-image-fallback"
+            aria-hidden="true"
+          >
+            사진을 불러올 수 없습니다
+          </span>
+
+        </span>
+
+        <span class="gso-use-case-copy">
+
+          <small>활용 시나리오 · 현장 참고 사진</small>
+
+          <strong>센서 설치 위치 검토</strong>
+
+          <span>
+            온실의 크기와 구조에 따라 센서 좌표를 검토합니다.
+          </span>
+
+          <b>
+            3D 시뮬레이터 열기
+            <i aria-hidden="true">↗</i>
+          </b>
+
+        </span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <p class="gso-use-cases-disclaimer">
+    사진은 서비스 활용 장면을 설명하기 위한 참고 이미지이며,
+    실제 GSO 고객·농가 도입 사례나 실증 성과를 나타내지 않습니다.
+  </p>
+
+</section>
+
+
+<!-- ================================================
+     3. GREENHOUSE SNAPSHOT
+================================================ -->
+
+<section class="dashboard-section dashboard-metrics">
+
+  <div class="dashboard-width">
+
+    <div class="snapshot-panel">
+
+      <div class="section-heading dashboard-section-heading snapshot-heading">
+
+        <div>
+
+          <div class="eyebrow">
+            GREENHOUSE SNAPSHOT
+          </div>
+
+          <h2>
+            온실의 지금을 읽다.
+          </h2>
+
+          <p>
+            온도부터 습도까지, 선택한 온실의 환경 정보를
+            한눈에 확인해 보세요.
+          </p>
+
+        </div>
+
+        <span class="soft-tag">데모</span>
+
+      </div>
+
+
+      <div class="stat-grid" aria-label="현재 온실 요약">
+
+        <!-- TEMPERATURE -->
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <span>평균 온도</span>
+
+            <span class="metric-icon temp-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0Z"/>
+                <path d="M12 11v6"/>
+              </svg>
+            </span>
+
+          </div>
+
+          <div class="stat-value">
+            <span data-count-up>{{ sample_temp }}</span>
+            <small>°C</small>
+          </div>
+
+          <div class="stat-foot">
+            데모 데이터 기준 최근 구간 평균
+          </div>
+
+          {% if snapshot_temperature_series %}
+
+          <svg
+            class="snapshot-sparkline"
+            data-sparkline="temperature"
+            viewBox="0 0 120 30"
+            preserveAspectRatio="none"
+            role="img"
+            aria-label="데모 온도 시계열"
+          >
+
+            <path class="snapshot-sparkline-path"></path>
+
+            <circle
+              class="snapshot-sparkline-dot"
+              r="3.5"
+              aria-hidden="true"
+            ></circle>
+
+          </svg>
+
+          {% endif %}
+
+        </article>
+
+
+        <!-- HUMIDITY -->
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <span>평균 상대습도</span>
+
+            <span class="metric-icon humidity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3.5s-5.5 6.1-5.5 10.2a5.5 5.5 0 0 0 11 0C17.5 9.6 12 3.5 12 3.5Z"/>
+                <path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>
+              </svg>
+            </span>
+
+          </div>
+
+          <div class="stat-value">
+            <span data-count-up>{{ sample_humidity }}</span>
+            <small>%</small>
+          </div>
+
+          <div class="stat-foot">
+            데모 데이터 기준 최근 구간 평균
+          </div>
+
+          {% if snapshot_humidity_series %}
+
+          <svg
+            class="snapshot-sparkline"
+            data-sparkline="humidity"
+            viewBox="0 0 120 30"
+            preserveAspectRatio="none"
+            role="img"
+            aria-label="데모 습도 시계열"
+          >
+
+            <path class="snapshot-sparkline-path"></path>
+
+            <circle
+              class="snapshot-sparkline-dot"
+              r="3.5"
+              aria-hidden="true"
+            ></circle>
+
+          </svg>
+
+          {% endif %}
+
+        </article>
+
+
+        <!-- SENSOR COUNT -->
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <span>센서 수</span>
+
+            <span class="metric-icon sensor-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 20v-6"/>
+                <path d="M9.5 20h5"/>
+                <circle cx="12" cy="11" r="1.5"/>
+                <path d="M7.8 15.2a6 6 0 0 1 0-8.5"/>
+                <path d="M16.2 6.7a6 6 0 0 1 0 8.5"/>
+                <path d="M4.9 18.1a10 10 0 0 1 0-14.2"/>
+                <path d="M19.1 3.9a10 10 0 0 1 0 14.2"/>
+              </svg>
+            </span>
+
+          </div>
+
+          <div class="stat-value">
+            {{ connected_sensors }}
+            <small>개</small>
+          </div>
+
+          <div class="stat-foot">
+            데모 배치에 포함된 센서 수
+          </div>
+
+        </article>
+
+
+        <!-- DATA STATUS -->
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <span>데이터 상태</span>
+
+            <span class="metric-icon status-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 17h3l3-7 4 9 3-6h3"/>
+                <path d="M4 4h16v16H4z"/>
+              </svg>
+            </span>
+
+          </div>
+
+          <div class="stat-value status-value">
+            데모 <span class="live-dot"></span>
+          </div>
+
+          <div class="stat-foot">
+            자동 갱신·실시간 수신 없음
+          </div>
+
+        </article>
+
+      </div>
+
+      {{ snapshot_temperature_series|json_script:"snapshot-temperature-series" }}
+      {{ snapshot_humidity_series|json_script:"snapshot-humidity-series" }}
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     4. ENVIRONMENT OVERVIEW
+================================================ -->
+
+<section class="dashboard-section dashboard-analysis">
+
+  <div class="dashboard-width">
+
+    <div class="section-heading dashboard-section-heading">
+
+      <div>
+
+        <div class="eyebrow">
+          ENVIRONMENT OVERVIEW
+        </div>
+
+        <h2>
+          환경 변화와 센서 구성을 함께
+        </h2>
+
+        <p>
+          데이터 추이에서 공간 배치 미리보기까지
+          한 화면에서 확인합니다.
+        </p>
+
+      </div>
+
+      <a
+        class="text-link"
+        href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+        전체 데이터 분석
+        <span aria-hidden="true">→</span>
+      </a>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+      <!-- CHART -->
+      <article class="card chart-card">
+
+        <div class="section-heading">
+
+          <div>
+
+            <h2>온실 환경 추이</h2>
+
+            <p>
+              최근 24시간 · 고정 시드 생성 데이터
+            </p>
+
+          </div>
+
+          <span class="soft-tag">DEMO</span>
+
+        </div>
+
+        {{ chart_html|safe }}
+
+      </article>
+
+
+      <!-- SENSOR PREVIEW -->
+      <article class="card preview-card">
+
+        <div class="section-heading">
+
+          <div>
+
+            <h2>센서 미리보기</h2>
+
+            <p>
+              온실 길이 방향 예시 배치
+            </p>
+
+          </div>
+
+          <a
+            class="text-link"
+            href="{% url 'simulator' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+          >
+            3D 보기
+            <span aria-hidden="true">→</span>
+          </a>
+
+        </div>
+
+
+        <div
+          class="mini-greenhouse"
+          aria-label="센서 세 개가 표시된 온실 도식"
+        >
+
+          <div class="mini-roof"></div>
+          <div class="mini-floor"></div>
+
+          <span class="mini-sensor sensor-a">A</span>
+          <span class="mini-sensor sensor-b">B</span>
+          <span class="mini-sensor sensor-c">C</span>
+
+          <div class="mini-axis">
+            <span>0m</span>
+            <span>{{ greenhouse.length_m|default:"10.0" }}m</span>
+          </div>
+
+        </div>
+
+
+        <div class="sensor-legend">
+
+          <span>
+            <i class="legend-dot green"></i>
+            센서 A
+          </span>
+
+          <span>
+            <i class="legend-dot blue"></i>
+            센서 B
+          </span>
+
+          <span>
+            <i class="legend-dot amber"></i>
+            센서 C
+          </span>
+
+        </div>
+
+        <p class="muted small-text">
+          예시 위치입니다.
+        </p>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     5. EDITORIAL
+================================================ -->
+
+<section class="dashboard-editorial">
+
+  <div class="dashboard-width editorial-layout">
+
+    <figure class="editorial-photo">
+
+      <img
+        src="{% static 'images/greenhouse-agriculture.jpg' %}"
+        alt="온실 시설 내부와 재배 공간"
+        loading="lazy"
+        decoding="async"
+      >
+
+      <figcaption>
+        온실 사진은 서비스 콘셉트를 설명하기 위한
+        참고 이미지입니다.
+      </figcaption>
+
+    </figure>
+
+
+    <div class="editorial-copy">
+
+      <div class="eyebrow">
+        FROM SENSOR TO SPACE
+      </div>
+
+      <h2>
+        단 3 곳으로<br>
+        공간을 다시 정의하다.
+      </h2>
+
+      <p>
+        온실의 위치마다 환경은 달라질 수 있습니다.
+        여러 후보 조합을 비교하고,
+        결과를 3D 공간과 설치 좌표로 이어서 검토해 보세요.
+      </p>
+
+      <a
+        class="button button-primary"
+        href="{% url 'optimization' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+        센서배치법 더 알아보기
+        <span aria-hidden="true">→</span>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     6. FEATURES
+================================================ -->
+
+<section class="feature-section">
+
+  <div class="dashboard-width">
+
+    <div class="section-heading feature-section-heading">
+
+      <div>
+
+        <div class="eyebrow">
+          EXPLORE GSO
+        </div>
+
+        <h2>
+          무엇을 찾고 계시나요?
+        </h2>
+
+        <p>
+          온실 데이터 확인부터 설치 가이드까지 보여드리겠습니다.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+      <a
+        class="feature-card feature-card-photo"
+        href="{% url 'greenhouse-list' %}"
+      >
+
+        <img
+          src="{% static 'images/greenhouse-tomatoes.jpg' %}"
+          alt="재배 중인 토마토와 온실 내부"
+          loading="lazy"
+          decoding="async"
+        >
+
+        <span class="feature-photo-shade"></span>
+
+        <span class="feature-card-copy">
+
+          <small>01 · GREENHOUSE</small>
+
+          <strong>
+            재배 현장과 온실 정보
+          </strong>
+
+          <span>
+            등록된 온실과 규격을 관리합니다
+            <b aria-hidden="true">→</b>
+          </span>
+
+        </span>
+
+      </a>
+
+
+      <a
+        class="feature-card"
+        href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="feature-card-icon feature-icon-coral">
+          ↗
+        </span>
+
+        <small>02 · ANALYTICS</small>
+
+        <strong>환경 데이터 분석</strong>
+
+        <span>
+          온도·습도 CSV를 로드
+        </span>
+
+      </a>
+
+
+      <a
+        class="feature-card"
+        href="{% url 'optimization' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="feature-card-icon feature-icon-coral">
+          ◎
+        </span>
+
+        <small>03 · OPTIMIZATION</small>
+
+        <strong>센서 배치 탐색</strong>
+
+        <span>
+          세 지점 센서의 결과 성능 비교
+        </span>
+
+      </a>
+
+
+      <a
+        class="feature-card"
+        href="{% url 'simulator' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}"
+      >
+
+        <span class="feature-card-icon feature-icon-rose">
+          ◇
+        </span>
+
+        <small>04 · 3D SIMULATOR</small>
+
+        <strong>공간 배치 미리보기</strong>
+
+        <span>
+          온실 모델과 좌표를 입체적으로 확인
+        </span>
+
+      </a>
+
+
+      <a
+        class="feature-card"
+        href="{% url 'report' %}"
+      >
+
+        <span class="feature-card-icon feature-icon-rose">
+          ▤
+        </span>
+
+        <small>05 · FIELD GUIDE</small>
+
+        <strong>설치 가이드와 분석 결과</strong>
+
+        <span>
+          좌표·조건·검증 한계를 정리
+        </span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     7. WORKFLOW
+================================================ -->
+
+<section class="dashboard-process">
+
+  <div class="dashboard-width">
+
+    <div class="section-heading dashboard-section-heading">
+
+      <div>
+
+        <div class="eyebrow">
+          A CLEARER WORKFLOW
+        </div>
+
+        <h2>
+          우리에게 필요한 것은 단 3 Steps
+        </h2>
+
+        <p>
+          수치와 시각화를 이어 실제 현장 판단을 준비합니다.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="process-grid">
+
+      <article>
+
+        <span>01</span>
+
+        <h3>환경 데이터 확인</h3>
+
+        <p>
+          측정 기간과 센서별 온도·습도 흐름을 확인합니다.
+        </p>
+
+      </article>
+
+      <article>
+
+        <span>02</span>
+
+        <h3>배치 조합 탐색</h3>
+
+        <p>
+          후보 지점의 데모 오차를 같은 기준으로 비교합니다.
+        </p>
+
+      </article>
+
+      <article>
+
+        <span>03</span>
+
+        <h3>설치 피드백</h3>
+
+        <p>
+          3D 시뮬레이터와 추천 좌표로 위치를 확인합니다.
+        </p>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     8. RECENT DATA & ALERTS
+================================================ -->
+
+<section class="dashboard-section dashboard-activity">
+
+  <div class="dashboard-width dashboard-grid lower-grid">
+
+    <!-- SENSOR VALUES -->
+    <article class="card">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            센서별 환경 정보
+          </h2>
+
+          <p>
+            최근 시점에서의 차이
+          </p>
+
+        </div>
+
+        <span class="soft-tag">데모</span>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>센서</th>
+              <th>온도</th>
+              <th>습도</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            {% for item in demo_sensor_values %}
+
+            <tr>
+
+              <td>
+                <span class="table-sensor">
+                  {{ item.name }}
+                </span>
+              </td>
+
+              <td>
+                {{ item.temperature }} °C
+              </td>
+
+              <td>
+                {{ item.humidity }} %
+              </td>
+
+              <td>
+                <span class="pill pill-neutral">
+                  DEMO
+                </span>
+              </td>
+
+            </tr>
+
+            {% endfor %}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </article>
+
+
+    <!-- ALERTS -->
+    <article class="card">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>최근 알림</h2>
+
+          <p>
+            가상 알림 내역
+          </p>
+
+        </div>
+
+        <a
+          class="text-link"
+          href="{% url 'notifications' %}"
+        >
+          전체 보기
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+
+
+      {% for alert in alerts %}
+
+      <div class="activity-row">
+
+        <span class="activity-icon">
+          !
+        </span>
+
+        <div>
+
+          <strong>
+            {{ alert.greenhouse.name }} 알림
+          </strong>
+
+          <small>
+            {{ alert.message|truncatechars:60 }}
+          </small>
+
+        </div>
+
+        <time>
+          {{ alert.created_at|date:"m.d H:i" }}
+        </time>
+
+      </div>
+
+      {% empty %}
+
+      <div class="empty-state compact">
+
+        <span class="empty-symbol">
+          ♧
+        </span>
+
+        <p>
+          아직 기록된 가상 알림이 없습니다.
+        </p>
+
+        <a href="{% url 'notifications' %}">
+          알림 관리에서 이벤트 시뮬레이션
+        </a>
+
+      </div>
+
+      {% endfor %}
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     9. FINAL CTA
+================================================ -->
+
+<section class="dashboard-cta">
+
+  <div class="dashboard-width cta-inner">
+
+    <div>
+
+      <div class="eyebrow">
+        READY TO EXPLORE?
+      </div>
+
+      <h2>
+        우리 온실 데이터를<br>
+        직접 살펴볼까요?
+      </h2>
+
+      <p>
+        온실을 등록해보고 시뮬레이션 해보세요!
+      </p>
+
+    </div>
+
+
+    <div class="hero-actions">
+
+      <a
+        class="button button-primary"
+        href="{% url 'greenhouse-list' %}"
+      >
+        온실 관리
+        <span aria-hidden="true">→</span>
+      </a>
+
+      <a
+        class="button button-secondary"
+        href="{% url 'report' %}"
+      >
+        설치 가이드
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     10. CLOSING MESSAGE
+================================================ -->
+
+
+<!-- ============================================
+     GSO SERVICE SELECTION
+     무료 체험 → 컨설팅 → 장기 관리
+============================================ -->
+
+<style>
+.gso-services {
+  padding: 110px 24px 125px;
+  background: linear-gradient(
+    180deg,
+    #ffd3d9 0%,
+    #c9939f 45%,
+    #a85e6e 100%
+  );
+  font-family: "Pretendard", sans-serif;
+}
+
+.gso-services-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.gso-services-title {
+  margin: 0 0 64px;
+  color: #ffffff;
+  text-align: center;
+  font-size: clamp(32px, 3.3vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 1.3;
+}
+
+.gso-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.gso-service-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 335px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  text-align: center;
+  text-decoration: none;
+  isolation: isolate;
+  background: #183b49;
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+}
+
+.gso-service-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  transition: transform .6s ease;
+}
+
+.gso-service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, .52);
+  transition: background .3s ease;
+}
+
+.gso-service-card-content {
+  padding: 24px;
+  color: #ffffff;
+}
+
+.gso-service-card h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(23px, 2.15vw, 31px);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.055em;
+  word-break: keep-all;
+}
+
+.gso-service-card p {
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.88);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.gso-service-card:hover,
+.gso-service-card:focus-visible {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 35px rgba(7, 56, 95, .23);
+}
+
+.gso-service-card:hover img,
+.gso-service-card:focus-visible img {
+  transform: scale(1.07);
+}
+
+.gso-service-card:hover::before {
+  background: rgba(0, 0, 0, .39);
+}
+
+.gso-service-card:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .gso-services-grid {
+    gap: 16px;
+  }
+
+  .gso-service-card {
+    height: 270px;
+  }
+
+  .gso-service-card h3 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 650px) {
+  .gso-services {
+    padding: 75px 20px 85px;
+  }
+
+  .gso-services-title {
+    margin-bottom: 38px;
+  }
+
+  .gso-services-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .gso-service-card {
+    height: 245px;
+  }
+
+  .gso-service-card h3 {
+    font-size: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gso-service-card,
+  .gso-service-card img {
+    transition: none;
+  }
+}
+
+
+/* 황조롱이 GSO 브랜드 텍스트 수정 */
+
+.gso-closing-brand strong {
+  font-weight: 650 !important;
+  letter-spacing: 0.015em !important;
+  color: #28282B !important;
+}
+
+/* 황조롱이 부분도 검정색으로 통일 */
+.gso-closing-brand .gso-brand-mark {
+  color: #28282B !important;
+}
+
+
+/* ========================================
+   GSO 하단 브랜드 영역 여백 및 자간 수정
+======================================== */
+
+/* 브랜드 영역 전체의 위아래 여백 */
+.gso-closing-brand {
+  margin-top: 160px !important;
+  margin-bottom: 130px !important;
+}
+
+/* '국내 최다 농업 성공사례' */
+.gso-closing-brand h2 {
+  letter-spacing: 0.015em !important;
+
+  /* 제목과 로고 사이 간격 */
+  margin-bottom: 58px !important;
+}
+
+/* '황조롱이 GSO' */
+.gso-closing-brand strong {
+  font-weight: 570 !important;
+  letter-spacing: 0.015em !important;
+  color: #28282B !important;
+}
+
+.gso-closing-brand .gso-brand-mark {
+  color: #28282B !important;
+}
+
+/* 모바일에서는 여백을 적절하게 축소 */
+@media (max-width: 700px) {
+  .gso-closing-brand {
+    margin-top: 100px !important;
+    margin-bottom: 75px !important;
+  }
+
+  .gso-closing-brand h2 {
+    margin-bottom: 60px !important;
+    letter-spacing: 0.005em !important;
+  }
+}
+
+
+</style>
+
+<section class="gso-services" aria-labelledby="gso-services-title">
+
+  <div class="gso-services-inner">
+
+    <h2 class="gso-services-title" id="gso-services-title">
+      어떤 도움이 필요하신가요?
+    </h2>
+
+    <div class="gso-services-grid">
+
+      <!-- 1. 무료 시뮬레이터 -->
+      <a
+        class="gso-service-card"
+        href="{% url 'simulator' %}"
+      >
+        <img
+          src="{% static 'images/use-cases/use-case-installation-planning.jpg' %}"
+          alt=""
+          loading="lazy"
+        >
+
+        <div class="gso-service-card-content">
+          <h3>무료 시뮬레이터</h3>
+          <p>내 온실 센서 배치 직접 살펴보기</p>
+        </div>
+      </a>
+
+      <!-- 2. 유료 컨설팅 -->
+      <a
+        class="gso-service-card"
+        href="{% url 'toss_payments:checkout_start' %}"
+      >
+        <img
+          src="{% static 'images/gso-contact.jpg' %}"
+          alt=""
+          loading="lazy"
+        >
+
+        <div class="gso-service-card-content">
+          <h3>문의하기</h3>
+          <p>국내 최고 전문가와 함께하는 맞춤 컨설팅</p>
+        </div>
+      </a>
+
+      <!-- 3. 장기 모니터링 상담 -->
+      <a
+        class="gso-service-card"
+        href="{% url 'toss_payments:checkout_start' %}"
+      >
+        <img
+          src="{% static 'images/use-cases/use-case-monitoring.webp' %}"
+          alt=""
+          loading="lazy"
+        >
+
+        <div class="gso-service-card-content">
+          <h3>장기 모니터링</h3>
+          <p>월별 관리 프로그램 진행 및 수정</p>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section
+  class="gso-closing"
+  aria-labelledby="gso-closing-title"
+>
+
+  <div class="gso-closing-copy" id="gso-closing-title">
+
+    <p class="gso-closing-first">
+      아직 문의하지 않으셔도 됩니다.<br>
+      홈페이지를 충분히 둘러보시고,<br>
+      저희가 대표님의 사업을 이해할 수 있을지,<br>
+      대표님도 저희 방식에 동의하시는지<br>
+      먼저 판단해주세요
+    </p>
+
+    <p class="gso-closing-second">
+      함께할 만하다고 느끼셨다면<br>
+      그때 이야기를 들려주세요
+    </p>
+
+  </div>
+
+
+  <div class="gso-closing-brand">
+
+    <h2>
+      국내 최다 농업 성공사례
+    </h2>
+
+    <strong>
+      <img class="gso-brand-logo" src="{% static 'images/gso-logo.png' %}" alt="" aria-hidden="true">
+      <span class="gso-brand-mark">황조롱이</span> GSO
+    </strong>
+
+  </div>
+
+</section>
+
+
+<!-- ================================================
+     11. Q&A
+================================================ -->
+
+<section
+  class="gso-faq"
+  id="gso-faq"
+  aria-labelledby="gso-faq-title"
+>
+
+  <div class="gso-faq-inner">
+
+    <header class="gso-faq-heading">
+
+      <div class="gso-faq-eyebrow">
+        Q&amp;A
+      </div>
+
+      <h2 id="gso-faq-title">
+        궁금한 점이 있으신가요?
+      </h2>
+
+    </header>
+
+
+    <div class="gso-faq-list">
+
+      <!-- Q1 -->
+      <details class="gso-faq-item">
+
+        <summary>
+
+          <span class="gso-faq-q" aria-hidden="true">
+            Q.
+          </span>
+
+          <span class="gso-faq-question">
+            계약 후 방치되는 건 아닌가요?
+          </span>
+
+          <span class="gso-faq-arrow" aria-hidden="true">
+            ›
+          </span>
+
+        </summary>
+
+        <div class="gso-faq-answer">
+
+          <p>
+            최적화는 한 번 측정하고 끝나는 일이 아닙니다.
+          </p>
+
+          <p>
+            장기 모니터링 프로그램에서는 단톡방 소통,
+            월별 보고 및 월별 전략 수정으로 운영합니다.
+          </p>
+
+          <small>
+            장기 관리 서비스의 실제 제공 범위와 운영 조건은
+            계약 전 별도로 안내합니다.
+          </small>
+
+        </div>
+
+      </details>
+
+
+      <!-- Q2 -->
+      <details class="gso-faq-item">
+
+        <summary>
+
+          <span class="gso-faq-q" aria-hidden="true">
+            Q.
+          </span>
+
+          <span class="gso-faq-question">
+            작은 단동형 농가도 가능할까요?
+          </span>
+
+          <span class="gso-faq-arrow" aria-hidden="true">
+            ›
+          </span>
+
+        </summary>
+
+        <div class="gso-faq-answer">
+
+          <p>
+            물론입니다.
+            국내 대다수 농가는 단동 온실입니다.
+          </p>
+
+          <p>
+            성공 사례는 대부분이 작은 온실입니다.
+            오히려 작을수록 사장님의 온실 최적화가 잘됩니다.
+          </p>
+
+
+        </div>
+
+      </details>
+
+
+      <!-- Q3 -->
+      <details class="gso-faq-item">
+
+        <summary>
+
+          <span class="gso-faq-q" aria-hidden="true">
+            Q.
+          </span>
+
+          <span class="gso-faq-question">
+            비용이 부담됩니다.
+          </span>
+
+          <span class="gso-faq-arrow" aria-hidden="true">
+            ›
+          </span>
+
+        </summary>
+
+        <div class="gso-faq-answer">
+
+          <p>
+            아무래도 교육은 더 비싸긴 합니다.
+            하지만 교육은 대행 1년 비용도 안됩니다.
+          </p>
+
+          <p>
+            한 번 배우고 직접 활용할 수 있는 방법과 외주,
+            어느 쪽이 남는 장사일까요?
+          </p>
+
+        </div>
+
+      </details>
+
+
+      <!-- Q4 -->
+      <details class="gso-faq-item">
+
+        <summary>
+
+          <span class="gso-faq-q" aria-hidden="true">
+            Q.
+          </span>
+
+          <span class="gso-faq-question">
+            센서 최적화 대행과 교육 중에
+            어떤 걸 받아야 할까요?
+          </span>
+
+          <span class="gso-faq-arrow" aria-hidden="true">
+            ›
+          </span>
+
+        </summary>
+
+        <div class="gso-faq-answer">
+
+          <p>
+            대표님 상황마다 다릅니다.
+          </p>
+
+          <p>
+            문의주시면 미팅 중에 솔직하게 말씀드립니다.
+          </p>
+
+          <p>
+            둘 다 필요 없다고 판단된다면
+            필요 없다고 말씀드리고 있습니다.
+          </p>
+
+        </div>
+
+      </details>
+
+
+      <!-- Q5 -->
+      <details class="gso-faq-item">
+
+        <summary>
+
+          <span class="gso-faq-q" aria-hidden="true">
+            Q.
+          </span>
+
+          <span class="gso-faq-question">
+            교육받을 건데 아무 농가나 받아주나요?
+          </span>
+
+          <span class="gso-faq-arrow" aria-hidden="true">
+            ›
+          </span>
+
+        </summary>
+
+        <div class="gso-faq-answer">
+
+          <p>
+            죄송합니다.
+            성공시킬 자신 없는 사업은 받지 않습니다.
+          </p>
+          <p>
+            3~4개월 관계보다, 1~2년 이상 함께 성장할 파트너를 찾습니다.
+
+          </p>
+        </div>
+
+      </details>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

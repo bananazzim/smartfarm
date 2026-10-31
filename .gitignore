@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+staticfiles/
+media/
+uploads/
+.pytest_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+
+# Local backups, logs, database sidecars, and SSH credentials
+backups/
+*.log
+*.sqlite3-*
+*.pem
+*.key

@@ -1,0 +1,284 @@
+
+{% extends "base.html" %}
+
+{% block title %}결제 실패 | GSO{% endblock %}
+
+{% block content %}
+
+<style>
+  .gso-fail {
+    --coral: #e66b61;
+    --coral-dark: #d95b52;
+    --text: #292929;
+    --muted: #858585;
+    --border: #e9e9e9;
+
+    max-width: 920px;
+    margin: 52px auto 110px;
+    padding: 0 24px;
+    color: var(--text);
+    font-family: inherit;
+  }
+
+  /* 상단 주문/결제 헤더 */
+  .gso-fail-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .gso-fail-top h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+  }
+
+  .gso-fail-steps {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #999;
+    font-size: 12px;
+  }
+
+  .gso-fail-steps strong {
+    color: #333;
+  }
+
+  /* 전체 주문 처리 영역 */
+  .gso-fail-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--coral);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.035);
+  }
+
+  /* 중앙 실패 메시지 */
+  .gso-fail-content {
+    min-height: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 65px 28px 58px;
+    text-align: center;
+  }
+
+  .gso-fail-headline {
+    margin: 0;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 400;
+    letter-spacing: -1.2px;
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+
+  .gso-fail-headline .highlight {
+    color: var(--coral);
+    font-weight: 750;
+  }
+
+  .gso-fail-message {
+    margin: 25px 0 0;
+    font-size: 14px;
+    color: #777;
+    line-height: 1.9;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  .gso-fail-message strong {
+    color: var(--coral);
+    font-weight: 650;
+  }
+
+  .gso-fail-subtext {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: #999;
+    line-height: 1.8;
+  }
+
+  /* 주문 정보가 있는 경우 */
+  .gso-fail-order {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #999;
+    line-height: 1.9;
+  }
+
+  .gso-fail-order strong {
+    color: #666;
+    font-weight: 600;
+  }
+
+  /* 하단 버튼 영역 */
+  .gso-fail-bottom {
+    border-top: 1px dashed #e6e6e6;
+    background: #fdfdfd;
+    padding: 26px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .gso-fail-button {
+    min-width: 145px;
+    min-height: 46px;
+    padding: 0 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 750;
+    transition: background 0.2s ease;
+  }
+
+  .gso-fail-button-primary {
+    background: var(--coral);
+    color: #fff;
+  }
+
+  .gso-fail-button-primary:hover {
+    background: var(--coral-dark);
+    color: #fff;
+  }
+
+  .gso-fail-button-secondary {
+    background: #fff;
+    color: #555;
+    border: 1px solid #ddd;
+  }
+
+  .gso-fail-button-secondary:hover {
+    background: #f6f6f6;
+    color: #333;
+  }
+
+  @media (max-width: 600px) {
+    .gso-fail {
+      margin: 32px auto 70px;
+      padding: 0 16px;
+    }
+
+    .gso-fail-top {
+      align-items: flex-start;
+    }
+
+    .gso-fail-top h1 {
+      font-size: 17px;
+    }
+
+    .gso-fail-steps {
+      font-size: 10px;
+      gap: 5px;
+    }
+
+    .gso-fail-content {
+      min-height: 340px;
+      padding: 55px 20px;
+    }
+
+    .gso-fail-headline {
+      font-size: 25px;
+    }
+
+    .gso-fail-message {
+      font-size: 13px;
+    }
+
+    .gso-fail-bottom {
+      padding: 20px 14px;
+    }
+
+    .gso-fail-button {
+      flex: 1;
+      min-width: 0;
+      padding: 0 10px;
+    }
+  }
+</style>
+
+<main class="gso-fail">
+
+  <!-- 상단 주문/결제 -->
+  <header class="gso-fail-top">
+    <h1>주문/결제</h1>
+
+    <nav class="gso-fail-steps" aria-label="결제 진행 단계">
+      <span>예약 신청</span>
+      <span>›</span>
+      <span>주문/결제</span>
+      <span>›</span>
+      <strong>결제 결과</strong>
+    </nav>
+  </header>
+
+  <!-- 결제 실패 패널 -->
+  <section class="gso-fail-panel">
+
+    <div class="gso-fail-content">
+
+      <h2 class="gso-fail-headline">
+        <span class="highlight">결제 처리에 실패하여</span><br>
+        예약을 완료하지 못했습니다.
+      </h2>
+
+      <p class="gso-fail-message">
+        {% if message %}
+          {{ message }}
+        {% else %}
+          결제가 정상적으로 완료되지 않았습니다.
+        {% endif %}
+      </p>
+
+      <p class="gso-fail-subtext">
+        다시 시도한 후에도 동일한 문제가 발생한다면<br>
+        GSO 담당자에게 문의해 주시기 바랍니다.
+      </p>
+
+      {% if order %}
+      <div class="gso-fail-order">
+        <div>
+          <strong>{{ order.product_name }}</strong>
+          · {{ order.amount }}원
+        </div>
+        <div>
+          주문번호 {{ order.order_number }}
+          · {{ order.get_status_display }}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- 하단 버튼 -->
+    <div class="gso-fail-bottom">
+
+      <a
+        href="{% url 'toss_payments:checkout_start' %}"
+        class="gso-fail-button gso-fail-button-primary"
+      >
+        다시 결제하기
+      </a>
+
+      <a
+        href="/"
+        class="gso-fail-button gso-fail-button-secondary"
+      >
+        GSO 홈으로
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+{% endblock %}

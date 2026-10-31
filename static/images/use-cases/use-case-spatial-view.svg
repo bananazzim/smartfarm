@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">3D 온실 공간 시뮬레이터</title>
+  <desc id="desc">온실 골조와 바닥 격자, 센서 좌표를 나타내는 3차원 공간 모델</desc>
+  <defs>
+    <linearGradient id="background" x2="0" y2="1">
+      <stop stop-color="#fffdfc"/>
+      <stop offset="1" stop-color="#f6f1f3"/>
+    </linearGradient>
+    <linearGradient id="floor" x2="0.9" y2="1">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#e9e5eb"/>
+    </linearGradient>
+    <linearGradient id="sensor-coral" x2="0" y2="1">
+      <stop stop-color="#ff8d95"/>
+      <stop offset="1" stop-color="#c83e59"/>
+    </linearGradient>
+    <linearGradient id="sensor-blue" x2="0" y2="1">
+      <stop stop-color="#8baabd"/>
+      <stop offset="1" stop-color="#56748a"/>
+    </linearGradient>
+    <clipPath id="ground-clip">
+      <polygon points="190,475 704,300 1050,485 532,680"/>
+    </clipPath>
+    <filter id="soft-shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="760" fill="url(#background)"/>
+  <ellipse cx="614" cy="616" rx="390" ry="44" fill="#b9adb5" opacity=".17" filter="url(#soft-shadow)"/>
+  <polygon points="190,475 704,300 1050,485 532,680" fill="url(#floor)" stroke="#d9d0d6" stroke-width="3"/>
+  <g clip-path="url(#ground-clip)" stroke="#ded7dd" stroke-width="2" opacity=".8">
+    <path d="M150 470 550 690M245 438 645 658M340 406 740 626M435 374 835 594M530 342 930 562M625 310 1025 530M720 278 1120 498"/>
+    <path d="m160 505 900-305M205 535l900-305M250 565l900-305M295 595l900-305M340 625l900-305M385 655l900-305"/>
+  </g>
+  <g fill="none" stroke="#998b95" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke-width="5" opacity=".74">
+      <path d="M190 475V315Q190 251 276 221L447 162Q473 153 499 162L671 222Q704 234 704 276V300"/>
+      <path d="M532 680V519Q532 455 618 425L789 366Q815 357 841 366L1013 426Q1050 439 1050 485"/>
+      <path d="M190 475 532 680M704 300 1050 485M190 315 532 519M704 276 1050 439"/>
+      <path d="M276 221 618 425M362 191 704 395M447 162 789 366M499 162 841 366M585 192 927 396M671 222 1013 426"/>
+    </g>
+    <g stroke-width="3" opacity=".45">
+      <path d="M276 221V427M362 191V397M447 162V368M499 162V368M585 192V398M671 222V428"/>
+      <path d="M190 355 704 180M190 395 704 220M190 435 704 260"/>
+      <path d="M532 559 1050 384M532 599 1050 424M532 639 1050 464"/>
+      <path d="M276 427 618 631M362 397 704 601M447 368 789 572M499 368 841 572M585 398 927 602M671 428 1013 632"/>
+    </g>
+  </g>
+  <g fill="none" stroke="#fff" stroke-width="2" opacity=".82">
+    <path d="M204 316Q204 266 279 239L448 181Q473 172 497 181L659 238"/>
+    <path d="M546 520Q546 470 621 443L790 385Q815 376 839 385L999 441"/>
+  </g>
+  <g>
+    <ellipse cx="407" cy="424" rx="20" ry="8" fill="#8b6876" opacity=".18"/>
+    <path d="M407 379V421" stroke="#c83e59" stroke-width="4" stroke-dasharray="5 6" opacity=".65"/>
+    <circle cx="407" cy="374" r="18" fill="#a92f4e" opacity=".15"/>
+    <circle cx="407" cy="374" r="12" fill="url(#sensor-coral)" stroke="#fff" stroke-width="3"/>
+    <ellipse cx="658" cy="500" rx="20" ry="8" fill="#8b6876" opacity=".18"/>
+    <path d="M658 455V497" stroke="#ed6879" stroke-width="4" stroke-dasharray="5 6" opacity=".65"/>
+    <circle cx="658" cy="450" r="18" fill="#ed6879" opacity=".15"/>
+    <circle cx="658" cy="450" r="12" fill="url(#sensor-coral)" stroke="#fff" stroke-width="3"/>
+    <ellipse cx="854" cy="550" rx="20" ry="8" fill="#8b6876" opacity=".18"/>
+    <path d="M854 505V547" stroke="#56748a" stroke-width="4" stroke-dasharray="5 6" opacity=".65"/>
+    <circle cx="854" cy="500" r="18" fill="#56748a" opacity=".15"/>
+    <circle cx="854" cy="500" r="12" fill="url(#sensor-blue)" stroke="#fff" stroke-width="3"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="20" font-weight="700">
+    <path d="M190 475 139 493" stroke="#c83e59" stroke-width="4"/>
+    <path d="M190 475 190 411" stroke="#7c9b70" stroke-width="4"/>
+    <path d="M190 475 241 457" stroke="#6e91ac" stroke-width="4"/>
+    <text x="121" y="508" fill="#c83e59">x</text>
+    <text x="181" y="400" fill="#6b8d61">z</text>
+    <text x="247" y="461" fill="#56748a">y</text>
+  </g>
+</svg>

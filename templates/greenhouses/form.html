@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block breadcrumb %}Workspace <span>/</span> <a href="{% url 'greenhouse-list' %}">온실 관리</a> <span>/</span> {{ title }}{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">GREENHOUSE SETUP</div><h1>{{ title }}</h1><p>입력한 크기는 3D 모델과 좌표 가이드에 사용됩니다.</p></div>
+<div class="form-layout">
+  <form method="post" class="card form-card">{% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="form-grid">
+      {% for field in form %}
+        <div class="field {% if field.name == 'name' or field.name == 'ventilation' or field.name == 'crop' %}field-wide{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+          {% if field.help_text %}<small class="field-help">{{ field.help_text }}</small>{% endif %}
+          {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="form-actions"><a class="button button-secondary" href="{% url 'greenhouse-list' %}">취소</a><button class="button button-primary" type="submit">저장하기</button></div>
+  </form>
+  <aside class="card help-card"><span class="help-icon">i</span><h2>입력 안내</h2><p>단동온실은 기본 선택이며, 각 치수는 0.1~500m 범위에서 입력할 수 있습니다.</p><p>센서 설치 높이와 위치는 온실 크기 내에서 조정됩니다. 실제 미세기후는 이 정보만으로 예측하지 않습니다.</p></aside>
+</div>
+{% endblock %}

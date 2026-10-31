@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}농가 알림 관리{% endblock %}
+{% block breadcrumb %}Workspace <span>/</span> 농가 알림 관리{% endblock %}
+{% block content %}
+<div class="page-heading"><div class="eyebrow">FARM ALERTS</div><h1>농가 알림 관리</h1><p>연락처와 환경 기준을 설정하고, 데모 이벤트를 미리 확인합니다.</p></div>
+<div class="notice notice-sample"><span class="notice-icon">i</span><div><strong>데모 이벤트 · 실제 문자 발송 기능 없음</strong><p>가상 이벤트는 화면의 전송 이력만 생성합니다. SolAPI 또는 외부 발송 API를 호출하지 않습니다.</p></div></div>
+<section class="two-column">
+  <form class="card form-card alert-form" method="post">{% csrf_token %}
+    <div class="section-heading"><div><h2>알림 기준</h2><p>온실별 연락처와 임계값을 저장합니다.</p></div></div>
+    {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="form-grid">{% for field in form %}<div class="field {% if field.name == 'greenhouse' or field.name == 'phone' %}field-wide{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}</div>
+    <div class="form-actions"><button class="button button-secondary" name="simulate" value="0" type="submit">기준 저장</button><button class="button button-primary" name="simulate" value="1" type="submit">가상 이벤트 발생</button></div>
+  </form>
+  <article class="card message-preview"><div class="section-heading"><div><h2>메시지 미리보기</h2><p>실제 전송 없이 문구를 확인합니다.</p></div><span class="soft-tag">미리보기</span></div><div class="phone-preview"><div class="preview-sender">GREENHOUSE DEMO</div><p>[데모 알림] 온실의 가상 환경 경보입니다. 온도/습도 기준을 확인해 주세요.</p><small>가상 미리보기 · 발송되지 않음</small></div><p class="muted small-text">연락처는 데모 이벤트 기록에만 표시됩니다. 실제 통신사는 연동되지 않습니다.</p></article>
+</section>
+<article class="card table-card"><div class="section-heading"><div><h2>최근 가상 알림 이력</h2><p>실제 문자 발송 내역이 아닙니다.</p></div><span class="soft-tag">데모</span></div><div class="table-wrap"><table><thead><tr><th>발생 시각</th><th>온실</th><th>내용</th><th>처리</th></tr></thead><tbody>{% for event in events %}<tr><td>{{ event.created_at|date:"Y-m-d H:i" }}</td><td>{{ event.greenhouse.name }}</td><td>{{ event.message }}</td><td><span class="pill pill-neutral">가상 기록</span></td></tr>{% empty %}<tr><td colspan="4" class="table-empty">생성된 가상 이벤트가 없습니다.</td></tr>{% endfor %}</tbody></table></div></article>
+{% endblock %}

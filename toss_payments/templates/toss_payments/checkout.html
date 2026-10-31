@@ -1,0 +1,1615 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}황조롱이 맞춤 컨설팅 문의{% endblock %}
+
+{% block content %}
+
+<style>
+/* =====================================================
+   GSO CONSULTING PAGE
+   이상한마케팅형 레이아웃
+   - 전체 너비 사진 히어로
+   - 투명 내비게이션
+   - 반투명 설문
+   - 기존 Toss Payments 연동 유지
+===================================================== */
+
+/* 이 페이지에서만 기존 헤더를 투명하게 변경 */
+body:has(#gso-consulting) .site-header {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255,255,255,.24) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+body:has(#gso-consulting) .site-header .brand strong,
+body:has(#gso-consulting) .site-header .brand small,
+body:has(#gso-consulting) .site-header .site-nav-link {
+  color: #ffffff !important;
+}
+
+body:has(#gso-consulting) .site-header .brand-mark {
+  background: rgba(255,255,255,.18) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.5);
+}
+
+body:has(#gso-consulting) .site-header .site-nav-link:hover {
+  color: #ffe1e8 !important;
+}
+
+body:has(#gso-consulting) .site-header .demo-chip {
+  background: rgba(255,255,255,.15);
+  color: #ffffff;
+  border-color: rgba(255,255,255,.22);
+}
+
+body:has(#gso-consulting) .site-header .nav-toggle {
+  color: #ffffff;
+  border-color: rgba(255,255,255,.5);
+  background: rgba(255,255,255,.12);
+}
+
+/* 모바일 메뉴가 열리면 다시 읽기 쉬운 색으로 */
+body:has(#gso-consulting) .site-header.menu-open {
+  position: fixed !important;
+  background: #ffffff !important;
+  color: #20242a !important;
+}
+
+body:has(#gso-consulting) .site-header.menu-open .brand strong,
+body:has(#gso-consulting) .site-header.menu-open .brand small,
+body:has(#gso-consulting) .site-header.menu-open .site-nav-link {
+  color: #20242a !important;
+}
+
+body:has(#gso-consulting) .site-header.menu-open .nav-toggle {
+  color: #20242a;
+}
+
+/* 기존 페이지의 좌우 여백 제거 */
+body:has(#gso-consulting) .content {
+  width: 100%;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+body:has(#gso-consulting) .main-column {
+  background: #eff1ef;
+}
+
+/* 전체 */
+#gso-consulting {
+  --gso-red: #c83e5c;
+  --gso-red-dark: #a72d49;
+  --gso-text: #20252b;
+  --gso-muted: #59636c;
+  --gso-line: rgba(40,49,54,.18);
+
+  width: 100%;
+  color: var(--gso-text);
+  font-family: inherit;
+}
+
+#gso-consulting,
+#gso-consulting * {
+  box-sizing: border-box;
+}
+
+#gso-consulting [hidden] {
+  display: none !important;
+}
+
+/* =====================================================
+   1. 전체 너비 히어로
+===================================================== */
+
+.gso-consulting-hero {
+  position: relative;
+  min-height: 410px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 140px 24px 70px;
+
+  background-image:
+    linear-gradient(
+      rgba(5,17,13,.45),
+      rgba(5,17,13,.52)
+    ),
+    url("{% static 'images/gso-seminar-hero.png' %}");
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* 상단 제목 */
+.gso-consulting-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #ffffff;
+}
+
+.gso-consulting-hero-content h1 {
+  margin: 0;
+  font-size: clamp(36px,4vw,52px);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+/* =====================================================
+   2. 설문 본문 전체 배경
+   - 같은 사진을 약하게 블러 처리
+   - 선택지는 흰 타일로 만들지 않음
+===================================================== */
+
+.gso-consulting-body {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  padding: 72px 24px 110px;
+  overflow: hidden;
+  background: #e4e9e5;
+}
+
+/* 사진 배경 */
+.gso-consulting-body::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: -50px;
+
+  background-image:
+    url("{% static 'images/gso-seminar-hero.png' %}");
+
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+
+  filter: blur(21px);
+  transform: scale(1.04);
+  opacity: .46;
+}
+
+/* 사진 위 밝은 반투명 막 */
+.gso-consulting-body::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: rgba(239,243,240,.42);
+}
+
+.gso-consulting-inner {
+  width: min(100%,1100px);
+  margin: 0 auto;
+}
+
+/* =====================================================
+   3. 안내문
+===================================================== */
+
+.gso-consulting-notice {
+  width: 100%;
+  padding: 30px 38px;
+  margin: 0 0 62px;
+
+  border: 1px solid rgba(255,255,255,.40);
+  background: rgba(255,255,255,.43);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  text-align: center;
+}
+
+.gso-consulting-notice p {
+  margin: 0;
+  color: #37434a;
+  font-size: 15px;
+  line-height: 2;
+  word-break: keep-all;
+}
+
+.gso-consulting-notice strong {
+  color: #20292f;
+}
+
+/* =====================================================
+   4. 설문 영역
+   큰 흰색 카드 제거
+===================================================== */
+
+.gso-consulting-sheet {
+  background: rgba(255,255,255,.37);
+  border: 1px solid rgba(255,255,255,.55);
+
+  padding: 45px 52px;
+
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+
+  box-shadow: 0 12px 35px rgba(26,41,31,.045);
+}
+
+.gso-survey-title {
+  margin: 0 0 16px;
+  font-size: clamp(25px,3vw,33px);
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: -.05em;
+  color: #20252b;
+  word-break: keep-all;
+}
+
+.gso-survey-description {
+  margin: 0 0 32px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #53606a;
+  word-break: keep-all;
+}
+
+/* 질문별 구분선 */
+.gso-question {
+  padding: 31px 4px 35px;
+  border-top: 1px solid var(--gso-line);
+}
+
+.gso-question-title {
+  margin: 0 0 23px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.6;
+  color: #20252b;
+  word-break: keep-all;
+}
+
+.gso-question-title .num {
+  margin-right: 5px;
+  color: var(--gso-red);
+}
+
+.gso-question-hint {
+  margin: -11px 0 20px;
+  color: #59656d;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* 흰색 선택지 타일 대신 텍스트 + 라디오 */
+.gso-radio-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px 28px;
+}
+
+.gso-radio-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 39px;
+
+  padding: 0;
+
+  background: transparent;
+  border: none;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #303b43;
+  cursor: pointer;
+}
+
+.gso-radio-item input {
+  appearance: auto;
+  width: 21px;
+  height: 21px;
+  margin: 0;
+  flex: 0 0 21px;
+  accent-color: var(--gso-red);
+  cursor: pointer;
+}
+
+.gso-radio-item:has(input:checked) {
+  color: var(--gso-red-dark);
+  font-weight: 800;
+}
+
+/* 상담 유형 선택 */
+.gso-help-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gso-help-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 600;
+  color: #303b43;
+  cursor: pointer;
+}
+
+.gso-help-option input {
+  appearance: auto;
+  width: 21px;
+  height: 21px;
+  margin: 0;
+  flex: 0 0 21px;
+  accent-color: var(--gso-red);
+}
+
+.gso-help-option:has(input:checked) {
+  color: var(--gso-red-dark);
+  font-weight: 800;
+}
+
+/* 반투명 드롭다운 */
+.gso-select {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  min-height: 59px;
+
+  padding: 0 18px;
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(57,72,65,.22);
+  border-radius: 4px;
+
+  font: inherit;
+  font-size: 16px;
+  color: #27313a;
+  cursor: pointer;
+}
+
+.gso-select option {
+  background: #ffffff;
+  color: #20252b;
+}
+
+.gso-select:focus {
+  outline: 2px solid rgba(200,62,92,.4);
+  outline-offset: 1px;
+}
+
+.gso-financial-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 26px;
+}
+
+.gso-financial-grid .gso-select {
+  max-width: none;
+}
+
+.gso-small-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 750;
+  color: #344047;
+}
+
+/* =====================================================
+   5. 버튼
+===================================================== */
+
+.gso-button-area {
+  margin-top: 34px;
+  text-align: center;
+}
+
+.gso-button-description {
+  margin: 0 0 20px;
+  color: #48545c;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.gso-primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 230px;
+  min-height: 61px;
+  padding: 16px 35px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: var(--gso-red);
+  color: #ffffff;
+
+  font: inherit;
+  font-size: 17px;
+  font-weight: 800;
+
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.gso-primary-button:hover {
+  background: var(--gso-red-dark);
+}
+
+.gso-primary-button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.gso-primary-button.full {
+  width: 100%;
+}
+
+/* =====================================================
+   6. 두 번째 단계 예약 정보
+===================================================== */
+
+.gso-product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 22px;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--gso-line);
+}
+
+.gso-product-row h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #20252b;
+}
+
+.gso-product-row p {
+  margin: 0;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #58646d;
+}
+
+.gso-product-price {
+  font-size: 28px;
+  font-weight: 850;
+  white-space: nowrap;
+  color: #20252b;
+}
+
+.gso-booking-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 23px;
+}
+
+.gso-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.gso-field.full {
+  grid-column: 1 / -1;
+}
+
+.gso-field label {
+  font-size: 14px;
+  font-weight: 750;
+  color: #2a353d;
+}
+
+.gso-required {
+  color: var(--gso-red);
+}
+
+.gso-input,
+.gso-textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+
+  background: rgba(255,255,255,.56);
+  border: 1px solid rgba(57,72,65,.2);
+  border-radius: 6px;
+
+  color: #243039;
+  color-scheme: light;
+  font: inherit;
+  font-size: 15px;
+}
+
+.gso-input {
+  min-height: 56px;
+}
+
+.gso-textarea {
+  min-height: 135px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.gso-input::placeholder,
+.gso-textarea::placeholder {
+  color: #87929a;
+}
+
+.gso-input:focus,
+.gso-textarea:focus {
+  outline: 2px solid rgba(200,62,92,.4);
+  outline-offset: 1px;
+}
+
+.gso-field-hint {
+  color: #58666f;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 개인정보 약관 */
+.gso-privacy {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--gso-line);
+}
+
+.gso-privacy h3 {
+  margin: 0 0 17px;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.gso-privacy-scroll {
+  max-height: 260px;
+  overflow-y: auto;
+
+  padding: 23px;
+  background: rgba(255,255,255,.37);
+  border: 1px solid rgba(57,72,65,.19);
+
+  font-size: 13px;
+  line-height: 1.9;
+  color: #35434c;
+}
+
+.gso-privacy-scroll h4 {
+  margin: 20px 0 7px;
+  font-size: 14px;
+  color: #202a32;
+}
+
+.gso-privacy-scroll h4:first-child {
+  margin-top: 0;
+}
+
+.gso-privacy-scroll p {
+  margin: 0 0 8px;
+}
+
+.gso-privacy-scroll ul {
+  padding-left: 19px;
+  margin: 5px 0 12px;
+}
+
+.gso-privacy-agree {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 19px;
+  margin-top: 14px;
+
+  background: rgba(255,255,255,.3);
+  border: 1px solid rgba(57,72,65,.18);
+
+  color: #2f3941;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gso-privacy-agree input {
+  appearance: auto;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex: 0 0 20px;
+  accent-color: var(--gso-red);
+}
+
+/* 결제 하단 */
+.gso-payment-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-top: 32px;
+  padding: 25px 0;
+
+  border-top: 1px solid var(--gso-line);
+  font-weight: 750;
+  font-size: 16px;
+}
+
+.gso-payment-total strong {
+  color: var(--gso-red);
+  font-size: 26px;
+}
+
+.gso-payment-error {
+  padding: 15px;
+  margin-top: 16px;
+  color: #9f2d48;
+  background: rgba(255,234,239,.8);
+  border: 1px solid rgba(200,62,92,.2);
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.gso-order-number {
+  margin-top: 16px;
+  color: #59636b;
+  text-align: center;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.gso-unavailable {
+  padding: 20px;
+  border: 1px solid rgba(200,62,92,.3);
+  color: #9c2b48;
+  background: rgba(255,240,244,.8);
+  line-height: 1.8;
+}
+
+/* =====================================================
+   7. 반응형
+===================================================== */
+
+@media (max-width: 760px) {
+  .gso-consulting-hero {
+    min-height: 350px;
+    padding: 130px 20px 60px;
+  }
+
+  .gso-consulting-body {
+    padding: 35px 14px 70px;
+  }
+
+  .gso-consulting-notice {
+    padding: 22px;
+    margin-bottom: 35px;
+  }
+
+  .gso-consulting-sheet {
+    padding: 28px 20px;
+  }
+
+  .gso-question-title {
+    font-size: 17px;
+  }
+
+  .gso-radio-row {
+    gap: 12px 20px;
+  }
+
+  .gso-radio-item {
+    font-size: 14px;
+  }
+
+  .gso-financial-grid,
+  .gso-booking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gso-field.full {
+    grid-column: auto;
+  }
+
+  .gso-product-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gso-select {
+    max-width: none;
+  }
+
+  .gso-survey-title {
+    font-size: 23px;
+  }
+
+  .gso-primary-button {
+    width: 100%;
+  }
+  
+}
+
+
+/* 상단 히어로 '문의하기' 제목 크기 조절 */
+#gso-consulting .gso-consulting-hero-content h1 {
+  font-size: clamp(27px, 3vw, 38px) !important;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.4;
+}
+
+/* 문의·결제 페이지에서만 SAMPLE DATA 숨기기 */
+body:has(#gso-consulting) .site-header .demo-chip {
+  display: none !important;
+}
+
+
+
+
+/* 문의하기 페이지 상단 메뉴 위치 고정 */
+@media (min-width: 1101px) {
+  body:has(#gso-consulting) .site-header .header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  body:has(#gso-consulting) .site-header .brand {
+    position: relative;
+    left: auto;
+    flex-shrink: 0;
+  }
+
+  body:has(#gso-consulting) .site-header .site-nav {
+    position: absolute;
+    left: calc(50% + 75px);
+    transform: translateX(-50%);
+    margin: 0;
+  }
+}
+
+
+</style>
+
+
+<div id="gso-consulting">
+
+  <!-- ========================================
+       상단 히어로: 사진 전체 너비
+       중앙 문의하기
+  ========================================= -->
+
+  <section class="gso-consulting-hero">
+    <div class="gso-consulting-hero-content">
+      <h1>문의하기</h1>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       아래 반투명 설문 영역
+  ========================================= -->
+
+  <section class="gso-consulting-body">
+
+    <div class="gso-consulting-inner">
+
+      <!-- 이상한마케팅 참고 안내문 -->
+      <div class="gso-consulting-notice">
+        <p>
+          성급하게 문의를 신청하지 않으셔도 됩니다.<br>
+          먼저 GSO의 서비스와 시뮬레이터를 충분히 둘러보시고,<br>
+          <strong>
+            저희가 고객님의 온실에 어떤 도움을 드릴 수 있을지
+            판단해 주세요.
+          </strong>
+          <br>
+          함께 이야기해 볼 만하다고 느끼셨다면,
+          아래 질문에 답변해 주세요.
+        </p>
+      </div>
+
+
+      <div class="gso-consulting-sheet">
+
+        {% if not order %}
+
+          <!-- ================================
+               STEP 1: 사전 설문
+          ================================= -->
+
+          <h2 class="gso-survey-title">
+            저희에게 관심이 생기셨나요?<br>
+            어떤 도움이 필요하신가요?
+          </h2>
+
+          <p class="gso-survey-description">
+            보다 적합한 상담을 준비하기 위해
+            5 가지 질문에 답변해주세요.
+          </p>
+
+
+          <form
+            id="gso-survey-form"
+            method="post"
+            action="{% url 'toss_payments:create_order' %}"
+          >
+
+            {% csrf_token %}
+
+            {% if survey_error %}
+              <p class="gso-payment-error" role="alert">
+                {{ survey_error }}
+              </p>
+            {% endif %}
+
+            <!-- 질문 1 -->
+            <section class="gso-question">
+
+              <h3 class="gso-question-title">
+                <span class="num">1.</span>
+                GSO를 처음 어떻게 알게 되셨나요?
+              </h3>
+
+              <div class="gso-radio-row">
+
+                <label class="gso-radio-item">
+                  <input
+                    type="radio"
+                    name="discovery_source"
+                    value="youtube"
+                    required
+                  >
+                  유튜브
+                </label>
+
+                <label class="gso-radio-item">
+                  <input
+                    type="radio"
+                    name="discovery_source"
+                    value="naver_blog"
+                  >
+                  네이버 블로그
+                </label>
+
+                <label class="gso-radio-item">
+                  <input
+                    type="radio"
+                    name="discovery_source"
+                    value="instagram"
+                  >
+                  인스타그램
+                </label>
+
+                <label class="gso-radio-item">
+                  <input
+                    type="radio"
+                    name="discovery_source"
+                    value="google"
+                  >
+                  웹 검색
+                </label>
+
+                <label class="gso-radio-item">
+                  <input
+                    type="radio"
+                    name="discovery_source"
+                    value="referral"
+                  >
+                  지인 소개
+                </label>
+
+                <label class="gso-radio-item">
+                  <input
+                    type="radio"
+                    name="discovery_source"
+                    value="other"
+                  >
+                  기타
+                </label>
+
+              </div>
+
+            </section>
+
+
+            <!-- 질문 2 -->
+            <section class="gso-question">
+
+              <h3 class="gso-question-title">
+                <span class="num">2.</span>
+                어떤 도움을 원하시나요?
+              </h3>
+
+              <p class="gso-question-hint">
+                가장 관심 있는 항목 하나를 선택해 주세요.
+              </p>
+
+              <div class="gso-help-options">
+
+                <label class="gso-help-option">
+                  <input
+                    type="radio"
+                    name="consulting_interest"
+                    value="greenhouse_consulting"
+                    required
+                  >
+                  시뮬레이터 결과를 바탕으로
+                  온실 내부 환경 상담받기
+                </label>
+
+                <label class="gso-help-option">
+                  <input
+                    type="radio"
+                    name="consulting_interest"
+                    value="sensor_education"
+                  >
+                  센서 위치 최적화 방법 배우기
+                </label>
+
+                <label class="gso-help-option">
+                  <input
+                    type="radio"
+                    name="consulting_interest"
+                    value="other"
+                  >
+                  기타
+                </label>
+
+              </div>
+
+            </section>
+
+
+            <!-- 질문 3 -->
+            <section class="gso-question">
+
+              <h3 class="gso-question-title">
+                <span class="num">3.</span>
+                온실 환경 개선에 어느 정도 투자할 계획이신가요?
+              </h3>
+
+              <p class="gso-question-hint">
+                센서 설치, 환경 모니터링 및
+                온실 개선에 사용할 수 있는 예상 예산입니다.
+              </p>
+
+              <select
+                class="gso-select"
+                name="investment_budget"
+                required
+              >
+
+                <option value="" selected disabled>
+                  예상 투자 금액을 선택해 주세요.
+                </option>
+
+                <option value="under_100k">
+                  10만 원 미만
+                </option>
+
+                <option value="100k_300k">
+                  10만~30만 원
+                </option>
+
+                <option value="300k_1m">
+                  30만~100만 원
+                </option>
+
+                <option value="1m_3m">
+                  100만~300만 원
+                </option>
+
+                <option value="3m_10m">
+                  300만~1,000만 원
+                </option>
+
+                <option value="over_10m">
+                  1,000만 원 이상
+                </option>
+
+                <option value="undecided">
+                  아직 정하지 않았습니다.
+                </option>
+
+              </select>
+
+            </section>
+
+
+            <!-- 질문 4 -->
+            <section class="gso-question">
+
+              <h3 class="gso-question-title">
+                <span class="num">4.</span>
+                현재 온실 사업의 연매출과 연간 순수익은
+                어느 정도인가요?
+              </h3>
+
+              <p class="gso-question-hint">
+                온실 운영 규모를 이해하기 위한 선택 항목입니다.
+                공개를 원하지 않으시면 답하지 않으셔도 됩니다.
+              </p>
+
+              <div class="gso-financial-grid">
+
+                <div>
+                  <label
+                    class="gso-small-label"
+                    for="annual-revenue"
+                  >
+                    연매출 (선택)
+                  </label>
+
+                  <select
+                    id="annual-revenue"
+                    class="gso-select"
+                    name="annual_revenue"
+                  >
+
+                    <option value="">선택하지 않음</option>
+                    <option value="not_operating">운영 전</option>
+                    <option value="under_10m">1,000만 원 미만</option>
+                    <option value="10m_30m">1,000만~3,000만 원</option>
+                    <option value="30m_100m">3,000만~1억 원</option>
+                    <option value="100m_300m">1억~3억 원</option>
+                    <option value="300m_1b">3억~10억 원</option>
+                    <option value="over_1b">10억 원 이상</option>
+                    <option value="prefer_not">응답하지 않음</option>
+
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    class="gso-small-label"
+                    for="annual-profit"
+                  >
+                    연간 순수익 (선택)
+                  </label>
+
+                  <select
+                    id="annual-profit"
+                    class="gso-select"
+                    name="annual_profit"
+                  >
+
+                    <option value="">선택하지 않음</option>
+                    <option value="not_operating">운영 전</option>
+                    <option value="loss">적자</option>
+                    <option value="under_10m">1,000만 원 미만</option>
+                    <option value="10m_30m">1,000만~3,000만 원</option>
+                    <option value="30m_100m">3,000만~1억 원</option>
+                    <option value="100m_300m">1억~3억 원</option>
+                    <option value="over_300m">3억 원 이상</option>
+                    <option value="prefer_not">응답하지 않음</option>
+
+                  </select>
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <div class="gso-button-area">
+
+              <p class="gso-button-description">
+                설문을 마치셨다면 다음 단계에서
+                상담 예약 정보를 작성해 주세요.<br>
+                이 단계에서는 결제되지 않습니다.
+              </p>
+
+              <button
+                class="gso-primary-button"
+                type="submit"
+              >
+                문의하기 →
+              </button>
+
+            </div>
+
+          </form>
+
+
+        {% else %}
+
+          <!-- ================================
+               STEP 2: 예약 정보
+          ================================= -->
+
+          <div class="gso-product-row">
+
+            <div>
+              <h2>황조롱이 컨설팅</h2>
+              <p>
+                온실 환경 및 센서 배치에 대한
+                1대1 맞춤 컨설팅입니다.<br>
+                컨설팅 일정은 담당자 확인 후 연락드립니다.
+              </p>
+            </div>
+
+            <strong class="gso-product-price">
+            </strong>
+
+          </div>
+
+
+          <h2 class="gso-survey-title">
+            상담 예약 정보를 입력해 주세요.
+          </h2>
+
+          <p class="gso-survey-description">
+            상담 일정과 연락처를 입력하신 후
+            개인정보 안내를 확인해 주세요.
+          </p>
+
+
+          <form
+            id="gso-reservation-form"
+            method="post"
+            action="{% url 'toss_payments:save_reservation' order.order_number %}"
+          >
+
+            {% csrf_token %}
+
+            <div class="gso-booking-grid">
+
+              <!-- 이름 -->
+              <div class="gso-field">
+
+                <label for="customer-name">
+                  이름 <span class="gso-required">*</span>
+                </label>
+
+                <input
+                  class="gso-input"
+                  id="customer-name"
+                  name="customer_name"
+                  type="text"
+                  placeholder="예: 홍길동"
+                  autocomplete="name"
+                  maxlength="50"
+                  required
+                >
+
+              </div>
+
+
+              <!-- 전화번호 -->
+              <div class="gso-field">
+
+                <label for="customer-phone">
+                  전화번호 <span class="gso-required">*</span>
+                </label>
+
+                <input
+                  class="gso-input"
+                  id="customer-phone"
+                  name="customer_phone"
+                  type="tel"
+                  placeholder="예: 010-0000-0000"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  maxlength="13"
+                  pattern="01[016789]-?[0-9]{3,4}-?[0-9]{4}"
+                  required
+                >
+
+              </div>
+
+
+              <!-- 날짜 -->
+              <div class="gso-field">
+
+                <label for="consulting-date">
+                  희망 상담 날짜
+                  <span class="gso-required">*</span>
+                </label>
+
+                <input
+                  class="gso-input"
+                  id="consulting-date"
+                  name="consulting_date"
+                  type="date"
+                  required
+                >
+
+              </div>
+
+
+              <!-- 시간 -->
+              <div class="gso-field">
+
+                <label for="consulting-time">
+                  희망 상담 시간
+                  <span class="gso-required">*</span>
+                </label>
+
+                <input
+                  class="gso-input"
+                  id="consulting-time"
+                  name="consulting_time"
+                  type="time"
+                  required
+                >
+
+                <small class="gso-field-hint">
+                  실제 상담 일정은 담당자 확인 후 확정됩니다.
+                </small>
+
+              </div>
+
+
+              <!-- 온실 위치 -->
+              <div class="gso-field full">
+
+                <label for="greenhouse-location">
+                  온실 위치 (선택)
+                </label>
+
+                <input
+                  class="gso-input"
+                  id="greenhouse-location"
+                  name="greenhouse_location"
+                  type="text"
+                  placeholder="예: 전북 김제시, 정읍"
+                  maxlength="200"
+                >
+
+              </div>
+
+
+              <!-- 요청사항 -->
+              <div class="gso-field full">
+
+                <label for="consulting-request">
+                  요청사항 (선택)
+                </label>
+
+                <textarea
+                  class="gso-textarea"
+                  id="consulting-request"
+                  name="consulting_request"
+                  placeholder="현재 온실 상황, 재배 작물, 센서 설치 현황, 상담에서 궁금한 사항을 적어 주세요."
+                  maxlength="2000"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+
+            <!-- 개인정보 -->
+            <section class="gso-privacy">
+
+              <h3>개인정보 수집 및 이용 동의</h3>
+
+              <div
+                class="gso-privacy-scroll"
+                tabindex="0"
+                aria-label="개인정보 수집 및 이용 안내"
+              >
+
+                <p>
+                  본인은 아래 개인정보 수집 및 이용 안내를 확인하고,
+                  황조롱이 2조팀의 온실 센서 배치 맞춤 컨설팅을 신청합니다.
+                </p>
+
+                <h4>1. 수집하는 개인정보 항목</h4>
+                <ul>
+                  <li>이름</li>
+                  <li>휴대전화 번호</li>
+                  <li>희망 상담 날짜 및 시간</li>
+                  <li>온실 위치 및 요청사항 (선택)</li>
+                  <li>사전 설문 응답 (유입 경로, 상담 관심 분야, 예상 투자 예산 및 선택적으로 제출한 사업 규모 정보)</li>
+                </ul>
+
+                <h4>2. 개인정보 수집 및 이용 목적</h4>
+                <ul>
+                  <li>상담 신청자 본인 확인</li>
+                  <li>컨설팅 예약 및 결제 확인</li>
+                  <li>상담 일정 조율 및 안내</li>
+                  <li>온실 환경 및 센서 배치 상담 준비</li>
+                  <li>고객 문의 및 예약 관리</li>
+                </ul>
+
+                <h4>3. 개인정보 보유 및 이용 기간</h4>
+                <ul>
+                  <li>상담 및 예약 관리 목적 달성 후 개인정보를 파기합니다.</li>
+                  <li>관계 법령에 따라 보존이 필요한 정보는 해당 기간 동안 보관합니다.</li>
+                  <li>동의 철회 시 법령상 보존 의무가 없는 정보는 파기합니다.</li>
+                </ul>
+
+                <h4>4. 개인정보 처리 주체 및 위탁</h4>
+                <ul>
+                  <li>개인정보 처리 주체: 황조롱이 2조팀</li>
+                  <li>외부 업체에 개인정보 처리 업무를 위탁하는 경우 실제 수탁자 및 위탁 업무를 별도로 안내합니다.</li>
+                </ul>
+
+                <h4>5. 동의 거부권 안내</h4>
+                <ul>
+                  <li>개인정보 수집 및 이용에 대한 동의를 거부할 수 있습니다.</li>
+                  <li>필수 항목에 동의하지 않으면 컨설팅 예약 신청이 제한될 수 있습니다.</li>
+                </ul>
+
+              </div>
+
+
+              <label
+                class="gso-privacy-agree"
+                for="privacy-consent"
+              >
+
+                <input
+                  type="checkbox"
+                  id="privacy-consent"
+                  name="privacy_consent"
+                  required
+                >
+
+                <span>
+                  [필수] 개인정보 수집 및 이용 안내를
+                  확인했으며 이에 동의합니다.
+                </span>
+
+              </label>
+
+            </section>
+
+
+            <!-- 결제 -->
+            <div class="gso-payment-total">
+              <span>총 결제 금액</span>
+              <strong>30,000원</strong>
+            </div>
+
+
+            {% if can_checkout %}
+
+              <button
+                class="gso-primary-button full"
+                id="payment-button"
+                type="submit"
+              >
+                예약하기
+              </button>
+
+            {% else %}
+
+              <div class="gso-unavailable">
+                결제 설정을 확인할 수 없습니다.
+                관리자에게 문의해 주세요.
+              </div>
+
+            {% endif %}
+
+
+            <p
+              id="payment-error"
+              class="gso-payment-error"
+              role="alert"
+              hidden
+            ></p>
+
+
+            <p class="gso-order-number">
+              주문번호: {{ order.order_number }}
+            </p>
+
+          </form>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{% if order and can_checkout %}
+
+{{ payment_config|json_script:"payment-config" }}
+
+<script src="https://js.tosspayments.com/v2/standard"></script>
+
+<script>
+  const config = JSON.parse(
+    document.getElementById("payment-config").textContent
+  );
+
+  const reservationForm = document.getElementById(
+    "gso-reservation-form"
+  );
+
+  const paymentButton = document.getElementById(
+    "payment-button"
+  );
+
+  const paymentError = document.getElementById(
+    "payment-error"
+  );
+
+  const dateInput = document.getElementById(
+    "consulting-date"
+  );
+
+  const timeInput = document.getElementById(
+    "consulting-time"
+  );
+
+
+  function getLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
+
+  dateInput.min = getLocalDateString(new Date());
+
+
+  // 휴대전화 번호 자동 하이픈
+  const phoneInput = document.getElementById("customer-phone");
+
+  function formatPhoneNumber(value) {
+    const numbers = value.replace(/\D/g, "").slice(0, 11);
+
+    if (numbers.length <= 3) {
+      return numbers;
+    }
+
+    if (numbers.length <= 7) {
+      return numbers.slice(0, 3) + "-" + numbers.slice(3);
+    }
+
+    if (numbers.length === 11) {
+      return (
+        numbers.slice(0, 3) + "-" +
+        numbers.slice(3, 7) + "-" +
+        numbers.slice(7)
+      );
+    }
+
+    return (
+      numbers.slice(0, 3) + "-" +
+      numbers.slice(3, 6) + "-" +
+      numbers.slice(6)
+    );
+  }
+
+  phoneInput.addEventListener("input", function () {
+    this.value = formatPhoneNumber(this.value);
+  });
+
+
+  reservationForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    paymentError.hidden = true;
+    paymentError.textContent = "";
+
+    dateInput.min = getLocalDateString(new Date());
+    
+    
+
+    if (!reservationForm.reportValidity()) {
+      return;
+    }
+
+    const selectedDateTime = new Date(
+      `${dateInput.value}T${timeInput.value}:00`
+    );
+
+    if (
+      Number.isNaN(selectedDateTime.getTime()) ||
+      selectedDateTime <= new Date()
+    ) {
+      paymentError.textContent =
+        "현재 시각보다 이후의 상담 일시를 선택해 주세요.";
+
+      paymentError.hidden = false;
+      return;
+    }
+
+    const customerName = document
+      .getElementById("customer-name")
+      .value.trim();
+
+    const customerPhone = document
+      .getElementById("customer-phone")
+      .value.replace(/\D/g, "");
+
+
+
+    paymentButton.disabled = true;
+
+    try {
+      const reservationResponse = await fetch(config.reservationUrl, {
+        method: "POST",
+        body: new FormData(reservationForm),
+        headers: {
+          "X-CSRFToken": reservationForm.querySelector(
+            '[name="csrfmiddlewaretoken"]'
+          ).value
+        }
+      });
+      const reservationResult = await reservationResponse.json();
+
+      if (!reservationResponse.ok || reservationResult.ok !== true) {
+        throw new Error(
+          reservationResult.error || "예약 정보를 저장하지 못했습니다."
+        );
+      }
+
+      const tossPayments = TossPayments(config.clientKey);
+
+      const payment = tossPayments.payment({
+        customerKey: config.orderNumber
+      });
+
+      await payment.requestPayment({
+        method: "CARD",
+
+        amount: {
+          currency: "KRW",
+          value: config.amount
+        },
+
+        orderId: config.orderNumber,
+        orderName: config.productName,
+        customerName: customerName,
+        customerMobilePhone: customerPhone,
+        successUrl: config.successUrl,
+        failUrl: config.failUrl
+      });
+
+    } catch (error) {
+      paymentError.textContent =
+        error.message || "결제 요청에 실패했습니다.";
+
+      paymentError.hidden = false;
+    } finally {
+      paymentButton.disabled = false;
+    }
+  });
+</script>
+
+{% endif %}
+
+{% endblock %}

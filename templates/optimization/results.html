@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}센서 최적 배치{% endblock %}
+{% block breadcrumb %}Insights <span>/</span> 센서 최적 배치{% endblock %}
+{% load static %}
+{% block head %}<style>
+.comparison-card .comparison-content{width:100%;max-width:1200px;min-width:0;margin-inline:auto}
+.comparison-card:not(.is-expanded) .combination-comparison tbody tr:nth-child(n+11){display:none}
+.comparison-toggle-wrap{text-align:center;margin-top:18px}
+.comparison-toggle{padding:8px 16px;border:1px solid #e3d9d7;border-radius:5px;background:#fff;color:#6b4d47;font:inherit;font-size:13px;cursor:pointer}
+.comparison-toggle:hover{background:#fff1ee;border-color:#F36D57}
+.comparison-toggle:focus-visible{outline:2px solid #B34635;outline-offset:3px}
+.comparison-card .comparison-action{text-align:right}
+.combination-3d{display:inline-block;box-sizing:border-box;max-width:100%;padding:4px 8px;border:1px solid #F36D57;border-radius:5px;font-size:12px;line-height:1.5;color:#B34635;text-decoration:none;white-space:normal;text-align:center;vertical-align:middle}
+.combination-3d-primary{padding:7px 10px;background:#FF7F6A;border-color:#FF7F6A;color:#FFFFFF}
+.combination-3d:hover{background:#FFF1EE;border-color:#F36D57;color:#B34635}
+.combination-3d-primary:hover{background:#F36D57;border-color:#F36D57;color:#FFFFFF}
+.combination-3d:active{background:#FFE3DD;border-color:#E45E49}
+.combination-3d-primary:active{background:#E45E49;border-color:#E45E49;color:#FFFFFF}
+.combination-3d:focus-visible{outline:2px solid #B34635;outline-offset:3px}
+@media(max-width:479px){.comparison-card .comparison-action{grid-column:1 / -1;grid-row:3;justify-self:end}.comparison-card .comparison-action .combination-3d{max-width:100%}}
+</style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>{% endblock %}
+{% block content %}
+{% for message in messages %}{% if 'csv-upload' in message.tags %}<div class="notice" role="status">{{ message }}</div>{% endif %}{% endfor %}
+<form method="get" class="card filter-card">
+  <div class="filter-group"><label for="optimization-greenhouse">대상 온실</label><select id="optimization-greenhouse" name="greenhouse">{% for item in greenhouses %}<option value="{{ item.pk }}" {% if greenhouse.pk == item.pk %}selected{% endif %}>{{ item.name }}</option>{% endfor %}</select></div>
+  <div class="filter-group"><label for="data-mode">데이터</label><select id="data-mode" name="mode"><option value="real" {% if not is_demo %}selected{% endif %}>실제 측정 데이터</option><option value="demo" {% if is_demo %}selected{% endif %}>DEMO 예시</option></select></div>
+  <button class="button button-primary" type="submit">온실 및 데이터 적용</button>
+  <a class="button button-secondary" href="{% url 'analysis' %}{% if greenhouse %}?greenhouse={{ greenhouse.pk }}{% endif %}#csv-upload">CSV 업로드</a>
+</form>
+<section class="photo-intro optimization-intro">
+  <div class="photo-intro-copy"><div class="eyebrow">SENSOR PLACEMENT STUDY</div><h1>센서 3개,<br><em>더 정교한 배치.</em></h1><p>후보 위치를 비교하고, 온실 환경을 대표할 수 있는 센서 조합을 탐색합니다.</p><div class="photo-intro-meta"><span>선택 온실 <b>{{ greenhouse.name|default:"등록 온실 없음" }}</b></span><span>분석 상태 <b>{% if is_demo %}DEMO 데이터{% else %}실제 측정 데이터{% endif %}</b></span><span>비교 방식 <b>시간 순서 검증</b></span></div></div>
+  <figure class="photo-intro-visual"><img src="{% static 'images/greenhouse-hydroponic.jpg' %}" alt="수경재배 온실 내부와 재배 베드" loading="lazy"><figcaption>실제 온실 사진 · 분석 대상 현장을 의미하지 않음</figcaption></figure>
+</section>
+<div class="notice notice-sample"><span class="notice-icon">i</span><div><strong>{% if is_demo %}DEMO · 샘플 데이터 분석 결과{% else %}실제 측정 데이터 분석{% endif %}</strong><p>등록된 측정 지점들의 평균을 참조값으로 사용한 상대적 비교입니다. 온실 전체 공간의 참값이나 독립적으로 검증된 최적 위치를 의미하지 않습니다.</p></div></div>
+<details class="card optimization-sensor-filter"><summary>분석 대상 센서</summary>
+{% if not is_demo %}
+<form method="get">
+  <input type="hidden" name="greenhouse" value="{{ greenhouse.pk }}"><input type="hidden" name="mode" value="real"><input type="hidden" name="selection" value="1">
+  <h2>분석 대상 센서</h2><p>같은 기간에 측정한 센서를 3개 이상 선택하세요. 처음에는 최근 측정 시각에 기록이 있는 센서를 선택하며, CSV 저장 직후에는 해당 파일의 센서를 사용합니다.</p>
+  <div class="optimization-sensor-options">{% for sensor in sensor_choices %}<label><input type="checkbox" name="sensor" value="{{ sensor.id }}"{% if sensor.selected %} checked{% endif %}><span><strong>{{ sensor.id }}</strong><small>{{ sensor.records }}건{% if sensor.first %} · {{ sensor.first|date:"Y.m.d H:i:s" }} ~ {{ sensor.last|date:"Y.m.d H:i:s" }}{% else %} · 실제 측정 기록 없음{% endif %}</small></span></label>{% empty %}<p>등록된 센서가 없습니다.</p>{% endfor %}</div>
+  <button type="submit" class="button button-primary">선택 센서 분석</button>
+</form>
+{% else %}<p>DEMO 후보 센서 P1~P6 전체를 사용합니다.</p>{% endif %}
+</details>
+{% if analysis_warning %}<p class="notice">{{ analysis_warning }}</p>{% endif %}
+{% if analysis_error %}<p class="notice" role="status">{{ analysis_error }}</p>{% endif %}
+{% if results %}
+<section class="two-column">
+  <article class="card placement-card">
+    <div class="section-heading"><div><h2>모드 1 · 기본 배치 시뮬레이션</h2><p>온실 길이의 20% · 50% · 80%</p></div><span class="soft-tag">예시</span></div>
+    {% if greenhouse %}
+      <div class="basic-placement">
+        <div class="placement-track"><span class="track-line"></span><span class="track-point p20"><b>A</b><small>20%</small></span><span class="track-point p50"><b>B</b><small>50%</small></span><span class="track-point p80"><b>C</b><small>80%</small></span></div>
+        <div class="track-axis"><span>0m</span><span>{{ greenhouse.length_m }}m</span></div>
+        <div class="coordinate-list">{% for point in basic_placements %}<div><b>센서 {{ point.name }}</b><span>x {{ point.ratio }}% = {{ point.x }}m</span></div>{% endfor %}</div>
+        <p class="muted small-text">좌표의 폭 방향은 중앙, 설치 높이는 바닥 기준 예시값입니다.</p>
+      </div>
+    {% else %}<p class="muted">온실을 등록하면 크기 기준의 배치 거리를 표시합니다.</p>{% endif %}
+  </article>
+  <article class="card recommendation-card">
+    <div class="section-heading"><div><h2>모드 2 · 조합 분석</h2><p>{{ candidate_count }}개 측정 지점 중 3개 조합</p></div><span class="soft-tag">{% if is_demo %}DEMO{% else %}실제 데이터{% endif %}</span></div>
+    <div class="recommend-label">학습 구간 기준 상위 조합</div>
+    <div class="recommend-points">{% for sensor in recommended.sensors %}<span>{{ sensor }}</span>{% endfor %}</div>
+    <div class="metric-pair"><div><small>검증 온도 MAE</small><strong>{{ recommended.test.temperature.mae|floatformat:3 }} <small>°C</small></strong></div><div><small>검증 습도 MAE</small><strong>{{ recommended.test.humidity.mae|floatformat:3 }} <small>%</small></strong></div>
+      <div><small>검증 온도 RMSE</small><strong>{{ recommended.test.temperature.rmse|floatformat:3 }} <small>°C</small></strong></div><div><small>검증 습도 RMSE</small><strong>{{ recommended.test.humidity.rmse|floatformat:3 }} <small>%</small></strong></div></div>
+    <a class="button button-primary button-full" href="#optimization-scene">3D에서 추천 조합 보기</a>
+  </article>
+</section>
+{% endif %}
+{% if greenhouse %}{% include "visualization/optimization_scene.html" %}{% endif %}
+{% if results %}
+<article class="card table-card comparison-card" aria-labelledby="comparison-title">
+  <div class="comparison-content">
+    <div class="section-heading"><div><h2 id="comparison-title">조합별 성능 비교</h2><p>{{ combination_count }}개 센서 조합 · 학습 성능 기준 정렬</p></div><span class="soft-tag">{% if is_demo %}DEMO{% else %}실제 데이터{% endif %}</span></div>
+    <div class="comparison-meta">
+      <p>MAE(평균 절대 오차): 값이 작을수록 오차가 적음</p>
+    </div>
+    
+    
+    </details>
+    <p class="comparison-note" id="comparison-note"></p>
+    <div class="table-wrap"><table class="combination-comparison" aria-labelledby="comparison-title" aria-describedby="comparison-note"><colgroup><col style="width: 8%"><col style="width: 28%"><col style="width: 20%"><col style="width: 20%"><col style="width: 24%"></colgroup><thead><tr><th scope="col">순위</th><th scope="col">센서 조합</th><th scope="col">검증 온도 MAE (°C)</th><th scope="col">검증 습도 MAE (%)</th><th scope="col">3D 확인</th></tr></thead><tbody id="comparison-rows">
+      {% for result in results %}
+      <tr data-combination="{{ result.rank }}"{% if result.rank == 1 %} class="comparison-selected"{% endif %}>
+        <td class="comparison-rank"><span class="comparison-mobile-label">순위 </span>{{ result.rank }}</td>
+        <td class="comparison-sensors"><button type="button" class="combination-select" aria-label="{{ result.rank }}위 조합 선택" aria-pressed="{% if result.rank == 1 %}true{% else %}false{% endif %}"><span class="combo-pills">{% for sensor in result.sensors %}<i>{{ sensor }}</i>{% endfor %}</span>{% if result.rank == 1 %}<span class="comparison-recommendation">추천 조합</span>{% endif %}</button></td>
+        <td class="comparison-value"><span class="comparison-mobile-label">검증 온도 MAE (°C)</span><span>{{ result.test.temperature.mae|floatformat:"3u" }}</span></td>
+        <td class="comparison-value"><span class="comparison-mobile-label">검증 습도 MAE (%)</span><span>{{ result.test.humidity.mae|floatformat:"3u" }}</span></td>
+        <td class="comparison-action">{% if result.simulator_url %}<a href="{{ result.simulator_url }}" class="combination-3d{% if result.rank == 1 %} combination-3d-primary{% endif %}" aria-label="{{ result.rank }}위 조합 3D 시뮬레이터에서 확인하기">{% if result.rank == 1 %}3D 시뮬레이터에서 확인하기{% else %}3D 보기{% endif %}</a>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody></table></div>
+    {% if results|length > 10 %}<div class="comparison-toggle-wrap"><button type="button" class="comparison-toggle" aria-expanded="false" aria-controls="comparison-rows" data-total="{{ results|length }}">전체 {{ results|length }}개 조합 보기</button></div>{% endif %}
+  </div>
+</article>
+{% endif %}
+<article class="card limitation-card"><h2>해석 시 유의사항</h2><ul><li>참조값은 각 시점의 모든 분석 대상 측정 지점 평균입니다. 센서 지점 표본과 가중 방식에 따라 순위가 달라질 수 있습니다.</li><li>분석 구간과 검증 구간을 시간 순서대로 분리했습니다. 검증 점수는 실제 온실 전체 공간의 정확도를 뜻하지 않습니다.</li><li>독립 검증 및 실제 설치 성능 확인은 <strong>검증 예정</strong>입니다.</li></ul></article>
+{% endblock %}
+
+{% block scripts %}{% if greenhouse %}<script type="module" src="{% static 'js/greenhouse-scene.js' %}?v=pointer-volume-7"></script>{% endif %}
+<script>
+const comparisonToggle = document.querySelector('.comparison-toggle');
+if (comparisonToggle) comparisonToggle.addEventListener('click', () => {
+  const card = comparisonToggle.closest('.comparison-card');
+  const expanded = card.classList.toggle('is-expanded');
+  comparisonToggle.setAttribute('aria-expanded', String(expanded));
+  comparisonToggle.textContent = expanded ? '상위 10개만 보기' : `전체 ${comparisonToggle.dataset.total}개 조합 보기`;
+});
+</script>{% endblock %}

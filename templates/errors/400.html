@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block title %}요청을 확인해 주세요{% endblock %}{% block content %}<div class="card error-page"><span>400</span><h1>요청을 처리할 수 없습니다</h1><p>입력 형식 또는 보안 토큰을 확인한 뒤 다시 시도해 주세요.</p><a class="button button-primary" href="{% url 'dashboard' %}">대시보드로</a></div>{% endblock %}

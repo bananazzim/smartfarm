@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block title %}오류가 발생했습니다{% endblock %}{% block content %}<div class="card error-page"><span>500</span><h1>서버에서 오류가 발생했습니다</h1><p>잠시 후 다시 시도해 주세요. 문제가 지속되면 관리자에게 문의해 주세요.</p><a class="button button-primary" href="{% url 'dashboard' %}">대시보드로</a></div>{% endblock %}
